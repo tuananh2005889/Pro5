@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -13,19 +13,289 @@ import {
   Download,
   ExternalLink,
   Code,
-  Palette,
+  Database,
   Smartphone,
   Globe,
-  ChevronDown,
+  Award,
+  GraduationCap,
+  Briefcase,
+  Star,
+  ArrowUpRight,
+  Zap,
+  Target,
+  Users,
+  Coffee,
+  Lightbulb,
 } from "lucide-react"
 import Image from "next/image"
+
+import LoadingScreen from "@/components/loading-screen"
+import DarkModeToggle from "@/components/dark-mode-toggle"
+import ScrollProgress from "@/components/scroll-progress"
+import FloatingActionButton from "@/components/floating-action-button"
+import CursorFollower from "@/components/cursor-follower"
+import SoundEffects from "@/components/sound-effects"
+import ParticleSystem from "@/components/particle-system"
+
+declare global {
+  interface Window {
+    gsap: any
+    ScrollTrigger: any
+    Lenis: any
+  }
+}
 
 export default function PersonalProfile() {
   const [isVisible, setIsVisible] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const cursorRef = useRef<HTMLDivElement>(null)
+  const heroRef = useRef<HTMLElement>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     setIsVisible(true)
+
+    // Mouse cursor effect
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+
+    window.addEventListener("mousemove", handleMouseMove)
+
+    // Initialize Lenis for ultra-smooth scrolling
+    if (typeof window !== "undefined" && window.Lenis) {
+      const lenis = new window.Lenis({
+        duration: 1.8,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: "vertical",
+        gestureDirection: "vertical",
+        smooth: true,
+        mouseMultiplier: 1.2,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+      })
+
+      function raf(time: number) {
+        lenis.raf(time)
+        requestAnimationFrame(raf)
+      }
+      requestAnimationFrame(raf)
+
+      // Connect GSAP ScrollTrigger with Lenis
+      lenis.on("scroll", window.ScrollTrigger?.update)
+    }
+
+    // Advanced GSAP Animations
+    if (typeof window !== "undefined" && window.gsap && window.ScrollTrigger) {
+      const gsap = window.gsap
+      const ScrollTrigger = window.ScrollTrigger
+
+      gsap.registerPlugin(ScrollTrigger)
+
+      // Hero entrance animation
+      const tl = gsap.timeline({ delay: 0.5 })
+      tl.fromTo(
+        ".hero-avatar",
+        { scale: 0, rotation: 180, opacity: 0 },
+        { scale: 1, rotation: 0, opacity: 1, duration: 1.2, ease: "back.out(1.7)" },
+      )
+        .fromTo(
+          ".hero-title",
+          { y: 100, opacity: 0, rotationX: 90 },
+          { y: 0, opacity: 1, rotationX: 0, duration: 1, ease: "power3.out" },
+          "-=0.8",
+        )
+        .fromTo(
+          ".hero-subtitle",
+          { y: 50, opacity: 0, scale: 0.8 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" },
+          "-=0.6",
+        )
+        .fromTo(
+          ".hero-description",
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
+          "-=0.4",
+        )
+        .fromTo(
+          ".hero-buttons",
+          { y: 30, opacity: 0, scale: 0.9 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" },
+          "-=0.2",
+        )
+        .fromTo(
+          ".hero-social",
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", stagger: 0.1 },
+          "-=0.4",
+        )
+
+      // Floating elements animation
+      gsap.to(".floating-1", {
+        y: -20,
+        x: 10,
+        rotation: 5,
+        duration: 3,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+      })
+
+      gsap.to(".floating-2", {
+        y: 15,
+        x: -15,
+        rotation: -3,
+        duration: 4,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+        delay: 1,
+      })
+
+      gsap.to(".floating-3", {
+        y: -10,
+        x: 20,
+        rotation: 2,
+        duration: 5,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+        delay: 2,
+      })
+
+      // Section reveal animations with advanced effects
+      gsap.utils.toArray(".reveal-section").forEach((section: any) => {
+        gsap.fromTo(
+          section,
+          { y: 100, opacity: 0, scale: 0.95, rotationX: 15 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            rotationX: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 85%",
+              end: "bottom 15%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        )
+      })
+
+      // Staggered card animations
+      gsap.utils.toArray(".stagger-card").forEach((card: any, index: number) => {
+        gsap.fromTo(
+          card,
+          { y: 80, opacity: 0, scale: 0.8, rotationY: 25 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            rotationY: 0,
+            duration: 0.8,
+            ease: "back.out(1.7)",
+            delay: index * 0.15,
+            scrollTrigger: {
+              trigger: card,
+              start: "top 90%",
+              end: "bottom 10%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        )
+      })
+
+      // Text reveal animation
+      gsap.utils.toArray(".text-reveal").forEach((text: any) => {
+        gsap.fromTo(
+          text,
+          { y: 50, opacity: 0, clipPath: "inset(100% 0 0 0)" },
+          {
+            y: 0,
+            opacity: 1,
+            clipPath: "inset(0% 0 0 0)",
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: text,
+              start: "top 85%",
+              end: "bottom 15%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        )
+      })
+
+      // Progress bar animations
+      gsap.utils.toArray(".progress-bar").forEach((bar: any) => {
+        const width = bar.getAttribute("data-width")
+        gsap.fromTo(
+          bar,
+          { width: "0%" },
+          {
+            width: width + "%",
+            duration: 1.5,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: bar,
+              start: "top 85%",
+              end: "bottom 15%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        )
+      })
+
+      // Parallax effects
+      gsap.utils.toArray(".parallax-slow").forEach((element: any) => {
+        gsap.to(element, {
+          yPercent: -30,
+          ease: "none",
+          scrollTrigger: {
+            trigger: element,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        })
+      })
+
+      gsap.utils.toArray(".parallax-fast").forEach((element: any) => {
+        gsap.to(element, {
+          yPercent: -60,
+          ease: "none",
+          scrollTrigger: {
+            trigger: element,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        })
+      })
+
+      // Magnetic effect for buttons
+      gsap.utils.toArray(".magnetic").forEach((button: any) => {
+        button.addEventListener("mouseenter", () => {
+          gsap.to(button, { scale: 1.05, duration: 0.3, ease: "power2.out" })
+        })
+        button.addEventListener("mouseleave", () => {
+          gsap.to(button, { scale: 1, duration: 0.3, ease: "power2.out" })
+        })
+      })
+    }
 
     const handleScroll = () => {
       const sections = ["home", "about", "skills", "projects", "contact"]
@@ -44,40 +314,104 @@ export default function PersonalProfile() {
     }
 
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("mousemove", handleMouseMove)
+    }
   }, [])
 
   const skills = [
-    { name: "React", level: 95, icon: Code },
-    { name: "TypeScript", level: 90, icon: Code },
-    { name: "Next.js", level: 92, icon: Globe },
-    { name: "UI/UX Design", level: 85, icon: Palette },
-    { name: "Mobile Development", level: 80, icon: Smartphone },
-    { name: "Node.js", level: 88, icon: Code },
+    { name: "Java", level: 90, icon: Code, category: "Programming", color: "from-orange-500 to-red-500" },
+    { name: "React", level: 85, icon: Code, category: "Frontend", color: "from-blue-500 to-cyan-500" },
+    { name: "Spring Boot", level: 80, icon: Globe, category: "Backend", color: "from-green-500 to-emerald-500" },
+    { name: "MySQL", level: 85, icon: Database, category: "Database", color: "from-blue-600 to-indigo-600" },
+    { name: "MongoDB", level: 75, icon: Database, category: "Database", color: "from-green-600 to-teal-600" },
+    { name: "Tailwind CSS", level: 90, icon: Code, category: "Frontend", color: "from-cyan-500 to-blue-500" },
+    { name: "C++", level: 75, icon: Code, category: "Programming", color: "from-purple-500 to-pink-500" },
+    {
+      name: "Android (Kotlin)",
+      level: 70,
+      icon: Smartphone,
+      category: "Mobile",
+      color: "from-indigo-500 to-purple-500",
+    },
   ]
 
   const projects = [
     {
-      title: "E-Commerce Platform",
-      description: "Nền tảng thương mại điện tử hiện đại với React và Node.js",
-      image: "/placeholder.svg?height=200&width=300",
-      tags: ["React", "Node.js", "MongoDB"],
-      link: "#",
+      title: "Auto Showroom Website",
+      description:
+        "Website bán xe được xây dựng với ReactTS, TailwindCSS, NodeJS, MongoDB cùng với AI model để đánh giá sản phẩm phổ biến nhất. Giao diện đẹp mắt với 3D models sử dụng ThreeJS, Framer-motion, AOS, GSAP, Parallax.",
+      image: "/placeholder.svg?height=300&width=500",
+      tags: ["React", "TypeScript", "NodeJS", "MongoDB", "ThreeJS", "GSAP"],
+      github: "https://github.com/tuananh2005889/auto-showroom",
+      demo: "#",
+      featured: true,
     },
     {
-      title: "Task Management App",
-      description: "Ứng dụng quản lý công việc với giao diện trực quan",
-      image: "/placeholder.svg?height=200&width=300",
-      tags: ["Next.js", "TypeScript", "Prisma"],
-      link: "#",
+      title: "Computer Manager System",
+      description:
+        "Ứng dụng quản lý kho máy tính dựa trên mô hình MVC được xây dựng bằng Java và MySQL. Hệ thống quản lý toàn diện với giao diện thân thiện.",
+      image: "/placeholder.svg?height=300&width=500",
+      tags: ["Java", "MySQL", "MVC", "Swing"],
+      github: "https://github.com/tuananh2005889/computer-manager",
+      demo: "#",
+      featured: false,
     },
     {
-      title: "Portfolio Website",
-      description: "Website portfolio cá nhân với animations đẹp mắt",
-      image: "/placeholder.svg?height=200&width=300",
-      tags: ["React", "Tailwind", "Framer Motion"],
-      link: "#",
+      title: "Auto Part Shop",
+      description:
+        "Ứng dụng Android với website quản lý sản phẩm được xây dựng bằng Java Spring Boot, Kotlin, Jetpack Compose, ReactJS, TailwindCSS, MySQL. Tích hợp PayOS API để thanh toán thực tế.",
+      image: "/placeholder.svg?height=300&width=500",
+      tags: ["Spring Boot", "Kotlin", "Jetpack Compose", "ReactJS", "PayOS"],
+      github: "https://github.com/tuananh2005889/auto-part-shop",
+      demo: "#",
+      featured: true,
     },
+    {
+      title: "Dormitory Management",
+      description:
+        "Dự án quản lý ký túc xá dựa trên mô hình MVC, được xây dựng bằng Java và MySQL. Hệ thống quản lý sinh viên, phòng ở và các dịch vụ ký túc xá.",
+      image: "/placeholder.svg?height=300&width=500",
+      tags: ["Java", "MySQL", "MVC", "JavaFX"],
+      github: "https://github.com/tuananh2005889/dormitory-management",
+      demo: "#",
+      featured: false,
+    },
+  ]
+
+  const achievements = [
+    {
+      title: "Phó Chủ tịch CLB Kỹ năng tại VKU",
+      description: "Lãnh đạo và tổ chức các hoạt động phát triển kỹ năng cho sinh viên",
+      icon: Award,
+      color: "from-yellow-400 to-orange-500",
+    },
+    {
+      title: "Thành viên Ban chấp hành Liên chi hội Khoa CNTT tại VKU",
+      description: "Tham gia điều hành các hoạt động của khoa",
+      icon: Briefcase,
+      color: "from-blue-400 to-indigo-500",
+    },
+    {
+      title: "Giải khuyến khích cuộc thi Tài năng Tiếng Anh 2024 tại VKU",
+      description: "Thể hiện khả năng giao tiếp tiếng Anh xuất sắc",
+      icon: Star,
+      color: "from-purple-400 to-pink-500",
+    },
+    {
+      title: "Giải ba cuộc thi thiết kế website đẹp nhất 2024 tại VKU",
+      description: "Thiết kế website sáng tạo và chuyên nghiệp",
+      icon: Award,
+      color: "from-green-400 to-emerald-500",
+    },
+  ]
+
+  const stats = [
+    { number: "50+", label: "Dự án hoàn thành", icon: Target },
+    { number: "2", label: "Năm kinh nghiệm", icon: Coffee },
+    { number: "4", label: "Giải thưởng", icon: Award },
+    { number: "100+", label: "Commits GitHub", icon: Code },
   ]
 
   const scrollToSection = (sectionId: string) => {
@@ -88,12 +422,31 @@ export default function PersonalProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 overflow-x-hidden transition-colors duration-500">
+      {isLoading && <LoadingScreen />}
+      <ParticleSystem />
+      <CursorFollower />
+      <ScrollProgress />
+      <DarkModeToggle />
+      <FloatingActionButton />
+      <SoundEffects />
+
+      {/* Custom Cursor */}
+      <div
+        ref={cursorRef}
+        className="fixed w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full pointer-events-none z-50 mix-blend-difference transition-transform duration-150 ease-out"
+        style={{
+          left: mousePosition.x - 12,
+          top: mousePosition.y - 12,
+          transform: `scale(${mousePosition.x > 0 ? 1 : 0})`,
+        }}
+      />
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
+      <nav className="fixed top-0 w-full z-40 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg">
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
               NVTank.ID
             </div>
             <div className="hidden md:flex space-x-8">
@@ -101,8 +454,8 @@ export default function PersonalProfile() {
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className={`capitalize transition-all duration-300 hover:text-purple-400 ${
-                    activeSection === section ? "text-purple-400" : "text-white/80"
+                  className={`relative capitalize transition-all duration-300 font-medium group ${
+                    activeSection === section ? "text-blue-600" : "text-gray-700 hover:text-blue-600"
                   }`}
                 >
                   {section === "home"
@@ -114,6 +467,11 @@ export default function PersonalProfile() {
                         : section === "projects"
                           ? "Dự án"
                           : "Liên hệ"}
+                  <span
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 ${
+                      activeSection === section ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
                 </button>
               ))}
             </div>
@@ -121,160 +479,271 @@ export default function PersonalProfile() {
         </div>
       </nav>
 
+      {/* Floating Background Elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="floating-1 absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-xl" />
+        <div className="floating-2 absolute top-1/3 right-20 w-48 h-48 bg-gradient-to-r from-indigo-400/20 to-pink-400/20 rounded-full blur-xl" />
+        <div className="floating-3 absolute bottom-1/4 left-1/4 w-40 h-40 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full blur-xl" />
+      </div>
+
       {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20"></div>
+      <section
+        id="home"
+        ref={heroRef}
+        className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20"
+      >
         <div className="container mx-auto px-6 text-center relative z-10">
-          <div
-            className={`transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-          >
-            <div className="mb-8 relative">
-              <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-r from-purple-400 to-pink-400 p-1 hover:scale-110 transition-transform duration-300">
-                <div className="w-full h-full rounded-full bg-slate-800 flex items-center justify-center text-6xl">
-                  👨‍💻
-                </div>
+          <div className="hero-avatar mb-8 relative">
+            <div className="w-40 h-40 mx-auto rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 p-1 shadow-2xl">
+              <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-7xl shadow-inner">
+                👨‍💻
               </div>
-              <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-400 rounded-full border-4 border-slate-900 animate-pulse"></div>
             </div>
+            <div className="absolute -top-2 -right-2 w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full border-4 border-white animate-pulse shadow-lg flex items-center justify-center">
+              <div className="w-3 h-3 bg-white rounded-full" />
+            </div>
+          </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
-              Nguyễn Văn Tuấn Anh
-            </h1>
+          <h1 className="hero-title text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
+            Nguyễn Văn
+            <br />
+            <span className="text-5xl md:text-7xl">Tuấn Anh</span>
+          </h1>
 
-            <p className="text-xl md:text-2xl text-purple-200 mb-8 max-w-2xl mx-auto">
-              Full Stack Developer & UI/UX Designer
-            </p>
+          <div className="hero-subtitle mb-8">
+            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full border border-blue-200/50 shadow-lg">
+              <Zap className="w-5 h-5 text-blue-600 mr-2" />
+              <span className="text-xl font-semibold text-blue-700">Full Stack Developer & IT Student</span>
+            </div>
+          </div>
 
-            <p className="text-lg text-white/70 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Tôi là một developer đam mê tạo ra những sản phẩm digital đẹp mắt và có ý nghĩa. Với kinh nghiệm trong
-              việc phát triển web và mobile applications hiện đại.
-            </p>
+          <p className="hero-description text-lg text-gray-700 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Sinh viên IT năm 2 tại VKU với kinh nghiệm làm việc với{" "}
+            <span className="font-semibold text-blue-600">Java, React</span> và các framework. Có khả năng thích ứng
+            nhanh với môi trường mới và luôn nghiên cứu, cập nhật công nghệ mới mỗi ngày.
+          </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25"
-                onClick={() => scrollToSection("projects")}
+          <div className="hero-buttons flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+            <Button
+              size="lg"
+              className="magnetic bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-4 rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl group"
+              onClick={() => scrollToSection("projects")}
+            >
+              <span className="mr-3">Khám phá dự án</span>
+              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="magnetic border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-10 py-4 rounded-full transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl group"
+            >
+              <Download className="w-5 h-5 mr-3 group-hover:animate-bounce" />
+              <span>Tải CV</span>
+            </Button>
+          </div>
+
+          <div className="hero-social flex justify-center space-x-6">
+            {[
+              { icon: Github, href: "https://github.com/tuananh2005889", label: "GitHub", color: "hover:bg-gray-800" },
+              {
+                icon: Linkedin,
+                href: "https://linkedin.com/in/your-profile",
+                label: "LinkedIn",
+                color: "hover:bg-blue-600",
+              },
+              { icon: Mail, href: "mailto:nvtankwork@gmail.com", label: "Email", color: "hover:bg-red-500" },
+            ].map(({ icon: Icon, href, label, color }) => (
+              <a
+                key={label}
+                href={href}
+                className={`magnetic w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-gray-700 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110 ${color}`}
+                aria-label={label}
               >
-                Xem dự án
-                <ExternalLink className="ml-2 h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
-              >
-                Tải CV
-                <Download className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-
-            <div className="flex justify-center space-x-6">
-              {[
-                { icon: Github, href: "https://github.com/tuananh2005889", label: "GitHub" },
-                { icon: Linkedin, href: "https://linkedin.com/in/your-profile", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:contact@nvtank.id.vn", label: "Email" },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white/80 hover:text-white hover:bg-purple-600 transition-all duration-300 hover:scale-110 hover:shadow-lg"
-                  aria-label={label}
-                >
-                  <Icon className="h-5 w-5" />
-                </a>
-              ))}
-            </div>
+                <Icon className="h-6 w-6" />
+              </a>
+            ))}
           </div>
         </div>
 
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="h-6 w-6 text-white/60" />
+          <div className="w-8 h-12 border-2 border-blue-600 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-blue-600 rounded-full mt-2 animate-pulse" />
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-20 bg-white/50 backdrop-blur-sm">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon
+              return (
+                <div
+                  key={index}
+                  className="stagger-card text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                    <Icon className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-3xl font-bold text-blue-700 mb-2">{stat.number}</div>
+                  <div className="text-gray-600 font-medium">{stat.label}</div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-black/20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Giới thiệu
+      <section id="about" className="py-32 bg-gradient-to-br from-blue-50 to-indigo-50 relative">
+        <div className="parallax-slow absolute inset-0 bg-gradient-to-r from-blue-100/50 to-purple-100/50" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="reveal-section text-center mb-20">
+            <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Về tôi
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <p className="text-lg text-white/80 leading-relaxed">
-                Tôi là một Full Stack Developer với hơn 3 năm kinh nghiệm trong việc phát triển các ứng dụng web và
-                mobile. Đam mê tạo ra những sản phẩm có tác động tích cực đến cuộc sống của người dùng.
-              </p>
-              <p className="text-lg text-white/80 leading-relaxed">
-                Chuyên môn của tôi bao gồm React, Next.js, Node.js, và các công nghệ hiện đại khác. Tôi luôn học hỏi và
-                cập nhật những xu hướng mới nhất trong ngành công nghệ.
-              </p>
-
-              <div className="grid grid-cols-2 gap-6 mt-8">
-                <div className="text-center p-4 rounded-lg bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-                  <div className="text-3xl font-bold text-purple-400 mb-2">50+</div>
-                  <div className="text-white/70">Dự án hoàn thành</div>
+          <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
+            <div className="space-y-8">
+              <div className="stagger-card bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/50 hover:shadow-2xl transition-all duration-500">
+                <div className="flex items-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mr-4">
+                    <GraduationCap className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-blue-700">Học vấn</h3>
                 </div>
-                <div className="text-center p-4 rounded-lg bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-                  <div className="text-3xl font-bold text-pink-400 mb-2">3+</div>
-                  <div className="text-white/70">Năm kinh nghiệm</div>
+                <div className="text-reveal">
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    <span className="font-bold text-blue-600">
+                      Trường Đại học Công nghệ Thông tin và Truyền thông Việt - Hàn (VKU)
+                    </span>
+                  </p>
+                  <p className="text-gray-600">
+                    Cử nhân Công nghệ Thông tin - Hợp tác Kinh doanh
+                    <br />
+                    Sinh viên năm 2, chuyên ngành Công nghệ Phần mềm
+                  </p>
+                </div>
+              </div>
+
+              <div className="stagger-card bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/50 hover:shadow-2xl transition-all duration-500">
+                <div className="flex items-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mr-4">
+                    <Target className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-purple-700">Mục tiêu</h3>
+                </div>
+                <div className="text-reveal">
+                  <p className="text-gray-700 leading-relaxed">
+                    Là sinh viên Công nghệ Thông tin hướng đến phát triển trong lĩnh vực{" "}
+                    <span className="font-semibold text-purple-600">lập trình web và kỹ thuật phần mềm</span>, mong muốn
+                    làm việc trong môi trường năng động để có thể áp dụng các kỹ năng kỹ thuật và tiếp tục học hỏi để
+                    trở thành một lập trình viên chuyên nghiệp.
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div className="relative">
-              <div className="w-full h-96 rounded-2xl bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-sm border border-white/10 overflow-hidden group hover:scale-105 transition-transform duration-300">
+            <div className="stagger-card relative">
+              <div className="parallax-fast w-full h-[500px] rounded-3xl bg-gradient-to-br from-blue-100 via-purple-100 to-indigo-100 overflow-hidden shadow-2xl border border-white/50">
                 <Image
-                  src="/placeholder.svg?height=400&width=400"
+                  src="/placeholder.svg?height=500&width=500"
                   alt="Profile"
-                  width={400}
-                  height={400}
+                  width={500}
+                  height={500}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-purple-900/20" />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4">
+                    <p className="text-blue-700 font-semibold">💡 "Code is poetry written in logic"</p>
+                  </div>
+                </div>
               </div>
+            </div>
+          </div>
+
+          {/* Achievements Grid */}
+          <div className="reveal-section">
+            <h3 className="text-3xl font-bold text-center mb-12 text-blue-700">Thành tích & Hoạt động</h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              {achievements.map((achievement, index) => {
+                const Icon = achievement.icon
+                return (
+                  <div
+                    key={index}
+                    className="stagger-card bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50 hover:shadow-xl transition-all duration-300 group"
+                  >
+                    <div className="flex items-start space-x-4">
+                      <div
+                        className={`w-14 h-14 rounded-xl bg-gradient-to-r ${achievement.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <Icon className="h-7 w-7 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-blue-700 mb-2 group-hover:text-purple-600 transition-colors duration-300">
+                          {achievement.title}
+                        </h4>
+                        <p className="text-gray-600 text-sm leading-relaxed">{achievement.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+      <section id="skills" className="py-32 bg-white/50 relative overflow-hidden">
+        <div className="parallax-slow absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-purple-50/50" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="reveal-section text-center mb-20">
+            <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Kỹ năng
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-gradient-to-r from-indigo-600 to-purple-600 mx-auto rounded-full" />
+            <p className="text-xl text-gray-600 mt-8 max-w-2xl mx-auto">
+              Những công nghệ và ngôn ngữ lập trình tôi đã làm việc và thành thạo
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {skills.map((skill, index) => {
               const Icon = skill.icon
               return (
                 <Card
                   key={skill.name}
-                  className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 group"
+                  className="stagger-card bg-white/80 backdrop-blur-sm border-white/50 hover:shadow-2xl transition-all duration-500 group overflow-hidden"
                 >
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-                        <Icon className="h-6 w-6 text-white" />
+                  <CardContent className="p-8">
+                    <div className="flex items-center mb-6">
+                      <div
+                        className={`w-14 h-14 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <Icon className="h-7 w-7 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold text-white">{skill.name}</h3>
-                        <p className="text-white/60">{skill.level}%</p>
+                        <h3 className="text-lg font-bold text-gray-800">{skill.name}</h3>
+                        <p className="text-gray-500 text-sm">{skill.category}</p>
                       </div>
                     </div>
-                    <div className="w-full bg-white/10 rounded-full h-2">
-                      <div
-                        className="bg-gradient-to-r from-purple-400 to-pink-400 h-2 rounded-full transition-all duration-1000 ease-out"
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
+                    <div className="relative">
+                      <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                        <div
+                          className={`progress-bar h-3 rounded-full bg-gradient-to-r ${skill.color} transition-all duration-1000 ease-out`}
+                          data-width={skill.level}
+                          style={{ width: "0%" }}
+                        />
+                      </div>
+                      <div className="flex justify-between items-center mt-3">
+                        <span className="text-sm text-gray-600">Proficiency</span>
+                        <span className="text-sm font-bold text-gray-800">{skill.level}%</span>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -285,131 +754,237 @@ export default function PersonalProfile() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 bg-black/20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+      <section id="projects" className="py-32 bg-gradient-to-br from-slate-50 to-blue-50 relative">
+        <div className="parallax-fast absolute inset-0 bg-gradient-to-r from-blue-100/30 to-indigo-100/30" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="reveal-section text-center mb-20">
+            <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
               Dự án nổi bật
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full" />
+            <p className="text-xl text-gray-600 mt-8 max-w-3xl mx-auto">
+              Những dự án tôi đã thực hiện, từ web applications đến mobile apps với các công nghệ hiện đại
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="space-y-16">
             {projects.map((project, index) => (
-              <Card
+              <div
                 key={index}
-                className="bg-white/5 backdrop-blur-sm border-white/10 overflow-hidden group hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20"
+                className={`stagger-card grid lg:grid-cols-2 gap-12 items-center ${
+                  index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
+                }`}
               >
-                <div className="relative overflow-hidden">
-                  <Image
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.title}
-                    width={300}
-                    height={200}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button size="sm" className="bg-white/20 backdrop-blur-sm hover:bg-white/30">
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
+                <div className={`${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
+                    <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl border border-white/50 group-hover:shadow-2xl transition-all duration-500">
+                      <div className="relative overflow-hidden">
+                        <Image
+                          src={project.image || "/placeholder.svg"}
+                          alt={project.title}
+                          width={500}
+                          height={300}
+                          className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex space-x-3">
+                          <Button
+                            size="sm"
+                            className="magnetic bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30"
+                            asChild
+                          >
+                            <a href={project.github} target="_blank" rel="noopener noreferrer">
+                              <Github className="h-4 w-4" />
+                            </a>
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="magnetic bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30"
+                            asChild
+                          >
+                            <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="h-4 w-4" />
+                            </a>
+                          </Button>
+                        </div>
+                        {project.featured && (
+                          <div className="absolute top-4 left-4">
+                            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center">
+                              <Star className="w-3 h-3 mr-1" />
+                              Featured
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-purple-400 transition-colors duration-300">
-                    {project.title}
-                  </h3>
-                  <p className="text-white/70 mb-4 leading-relaxed">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="secondary"
-                        className="bg-purple-600/20 text-purple-300 hover:bg-purple-600/30 transition-colors duration-300"
+
+                <div className={`${index % 2 === 1 ? "lg:col-start-1 lg:row-start-1" : ""}`}>
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-3xl font-bold text-blue-700 mb-4 group-hover:text-purple-600 transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                      <div className="text-reveal">
+                        <p className="text-gray-700 leading-relaxed text-lg">{project.description}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-3">
+                      {project.tags.map((tag) => (
+                        <Badge
+                          key={tag}
+                          className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 hover:from-blue-200 hover:to-indigo-200 transition-all duration-300 px-4 py-2 text-sm font-medium border border-blue-200/50"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <div className="flex space-x-4 pt-4">
+                      <Button
+                        className="magnetic bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group"
+                        asChild
                       >
-                        {tag}
-                      </Badge>
-                    ))}
+                        <a href={project.github} target="_blank" rel="noopener noreferrer">
+                          <Github className="w-5 h-5 mr-2" />
+                          <span>View Code</span>
+                          <ArrowUpRight className="w-4 h-4 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                        </a>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="magnetic border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-full transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                        asChild
+                      >
+                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-5 h-5 mr-2" />
+                          <span>Live Demo</span>
+                        </a>
+                      </Button>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+      <section id="contact" className="py-32 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative">
+        <div className="parallax-slow absolute inset-0 bg-gradient-to-r from-blue-100/50 to-purple-100/50" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="reveal-section text-center mb-20">
+            <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Liên hệ
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
+            <p className="text-xl text-gray-600 mt-8 max-w-2xl mx-auto">
+              Hãy kết nối với tôi để thảo luận về các cơ hội hợp tác hoặc dự án thú vị
+            </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-16">
               <div className="space-y-8">
-                <div>
-                  <h3 className="text-2xl font-semibold text-white mb-6">Hãy kết nối với tôi</h3>
-                  <p className="text-white/70 text-lg leading-relaxed">
-                    Tôi luôn sẵn sàng thảo luận về các dự án mới, cơ hội hợp tác hoặc đơn giản chỉ là trò chuyện về công
-                    nghệ.
-                  </p>
+                <div className="stagger-card">
+                  <h3 className="text-3xl font-bold text-blue-700 mb-8 flex items-center">
+                    <Users className="w-8 h-8 mr-3" />
+                    Hãy kết nối với tôi
+                  </h3>
+                  <div className="text-reveal">
+                    <p className="text-gray-700 text-lg leading-relaxed mb-8">
+                      Tôi luôn sẵn sàng thảo luận về các dự án mới, cơ hội thực tập, hoặc đơn giản chỉ là trò chuyện về
+                      công nghệ và lập trình. Đừng ngần ngại liên hệ!
+                    </p>
+                  </div>
                 </div>
 
                 <div className="space-y-6">
                   {[
-                    { icon: Mail, label: "Email", value: "contact@nvtank.id.vn" },
-                    { icon: Phone, label: "Điện thoại", value: "+84 123 456 789" },
-                    { icon: MapPin, label: "Địa chỉ", value: "Hà Nội, Việt Nam" },
-                  ].map(({ icon: Icon, label, value }) => (
-                    <div
+                    {
+                      icon: Mail,
+                      label: "Email",
+                      value: "nvtankwork@gmail.com",
+                      color: "from-red-500 to-pink-500",
+                      href: "mailto:nvtankwork@gmail.com",
+                    },
+                    {
+                      icon: Phone,
+                      label: "Điện thoại",
+                      value: "0374123205",
+                      color: "from-green-500 to-emerald-500",
+                      href: "tel:0374123205",
+                    },
+                    {
+                      icon: MapPin,
+                      label: "Địa chỉ",
+                      value: "Hòa Quý, Ngũ Hành Sơn, Đà Nẵng",
+                      color: "from-blue-500 to-indigo-500",
+                      href: "#",
+                    },
+                  ].map(({ icon: Icon, label, value, color, href }) => (
+                    <a
                       key={label}
-                      className="flex items-center space-x-4 p-4 rounded-lg bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group"
+                      href={href}
+                      className="stagger-card flex items-center space-x-6 p-6 rounded-2xl bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-500 group border border-white/50 hover:scale-105"
                     >
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <Icon className="h-5 w-5 text-white" />
+                      <div
+                        className={`w-16 h-16 rounded-xl bg-gradient-to-r ${color} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <Icon className="h-8 w-8 text-white" />
                       </div>
                       <div>
-                        <p className="text-white/60 text-sm">{label}</p>
-                        <p className="text-white font-medium">{value}</p>
+                        <p className="text-gray-600 text-sm font-medium">{label}</p>
+                        <p className="text-blue-700 font-bold text-lg group-hover:text-purple-600 transition-colors duration-300">
+                          {value}
+                        </p>
                       </div>
-                    </div>
+                      <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 ml-auto" />
+                    </a>
                   ))}
                 </div>
               </div>
 
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10">
-                <CardContent className="p-8">
+              <Card className="stagger-card bg-white/80 backdrop-blur-sm border-white/50 shadow-2xl">
+                <CardContent className="p-10">
+                  <div className="flex items-center mb-8">
+                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mr-4">
+                      <Lightbulb className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-blue-700">Gửi tin nhắn</h3>
+                  </div>
                   <form className="space-y-6">
                     <div>
-                      <label className="block text-white/80 mb-2">Tên của bạn</label>
+                      <label className="block text-gray-700 font-semibold mb-3">Tên của bạn</label>
                       <input
                         type="text"
-                        className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-400 transition-colors duration-300"
+                        className="w-full px-6 py-4 rounded-xl bg-white/80 border-2 border-blue-200/50 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all duration-300 shadow-sm"
                         placeholder="Nhập tên của bạn"
                       />
                     </div>
                     <div>
-                      <label className="block text-white/80 mb-2">Email</label>
+                      <label className="block text-gray-700 font-semibold mb-3">Email</label>
                       <input
                         type="email"
-                        className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-400 transition-colors duration-300"
+                        className="w-full px-6 py-4 rounded-xl bg-white/80 border-2 border-blue-200/50 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all duration-300 shadow-sm"
                         placeholder="your@email.com"
                       />
                     </div>
                     <div>
-                      <label className="block text-white/80 mb-2">Tin nhắn</label>
+                      <label className="block text-gray-700 font-semibold mb-3">Tin nhắn</label>
                       <textarea
-                        rows={4}
-                        className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-400 transition-colors duration-300 resize-none"
+                        rows={5}
+                        className="w-full px-6 py-4 rounded-xl bg-white/80 border-2 border-blue-200/50 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all duration-300 resize-none shadow-sm"
                         placeholder="Nội dung tin nhắn..."
                       ></textarea>
                     </div>
-                    <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                      Gửi tin nhắn
+                    <Button className="magnetic w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-lg font-semibold">
+                      <span className="mr-2">Gửi tin nhắn</span>
+                      <ArrowUpRight className="w-5 h-5" />
                     </Button>
                   </form>
                 </CardContent>
@@ -420,9 +995,29 @@ export default function PersonalProfile() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 bg-black/40 border-t border-white/10">
-        <div className="container mx-auto px-6 text-center">
-          <p className="text-white/60">© 2024 Nguyễn Văn Tuấn Anh. Được thiết kế với ❤️ và React | nvtank.id.vn</p>
+      <footer className="py-12 bg-white/80 backdrop-blur-sm border-t border-blue-200/50">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-gray-600 mb-4 md:mb-0">
+              © 2024 Nguyễn Văn Tuấn Anh. Được thiết kế với ❤️ và React | nvtank.id.vn
+            </div>
+            <div className="flex space-x-6">
+              {[
+                { icon: Github, href: "https://github.com/tuananh2005889", label: "GitHub" },
+                { icon: Linkedin, href: "https://linkedin.com/in/your-profile", label: "LinkedIn" },
+                { icon: Mail, href: "mailto:nvtankwork@gmail.com", label: "Email" },
+              ].map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  className="magnetic w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg"
+                  aria-label={label}
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </footer>
     </div>
