@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss"
 
 const config: Config = {
-  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -44,6 +43,20 @@ const config: Config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        // Custom color palette: Yellow, White, Purple, Blue
+        yellow: {
+          DEFAULT: "hsl(var(--yellow))",
+          light: "hsl(var(--yellow-light))",
+        },
+        purple: {
+          DEFAULT: "hsl(var(--purple))",
+          light: "hsl(var(--purple-light))",
+        },
+        blue: {
+          DEFAULT: "hsl(var(--blue))",
+          light: "hsl(var(--blue-light))",
+        },
+        white: "hsl(var(--white))",
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
@@ -94,17 +107,10 @@ const config: Config = {
             transform: "translateY(0)",
           },
         },
-        "haptic-light": {
-          "0%": { transform: "scale(1)" },
-          "50%": { transform: "scale(1.02)" },
-          "100%": { transform: "scale(1)" },
-        },
-        "haptic-medium": {
-          "0%": { transform: "scale(1)" },
-          "25%": { transform: "scale(1.05)" },
-          "50%": { transform: "scale(0.98)" },
-          "75%": { transform: "scale(1.02)" },
-          "100%": { transform: "scale(1)" },
+        "gradient-shift": {
+          "0%": { "background-position": "0% 50%" },
+          "50%": { "background-position": "100% 50%" },
+          "100%": { "background-position": "0% 50%" },
         },
       },
       animation: {
@@ -112,8 +118,7 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "spin-slow": "spin 3s linear infinite",
         "fade-in-up": "fadeInUp 0.5s ease-out forwards",
-        "haptic-light": "haptic-light 0.1s ease-out",
-        "haptic-medium": "haptic-medium 0.2s ease-out",
+        "gradient-shift": "gradient-shift 3s ease infinite",
       },
       backdropBlur: {
         xs: "2px",

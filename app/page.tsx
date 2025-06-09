@@ -30,7 +30,6 @@ import {
 import Image from "next/image"
 
 import LoadingScreen from "@/components/loading-screen"
-import DarkModeToggle from "@/components/dark-mode-toggle"
 import ScrollProgress from "@/components/scroll-progress"
 import FloatingActionButton from "@/components/floating-action-button"
 import CursorFollower from "@/components/cursor-follower"
@@ -74,12 +73,12 @@ export default function PersonalProfile() {
     // Initialize Lenis for ultra-smooth scrolling
     if (typeof window !== "undefined" && window.Lenis) {
       const lenis = new window.Lenis({
-        duration: 1.8,
+        duration: 0.8,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         direction: "vertical",
         gestureDirection: "vertical",
         smooth: true,
-        mouseMultiplier: 1.2,
+        mouseMultiplier: 1.5,
         smoothTouch: false,
         touchMultiplier: 2,
         infinite: false,
@@ -173,7 +172,7 @@ export default function PersonalProfile() {
         delay: 2,
       })
 
-      // Section reveal animations with advanced effects
+      // Section reveal animations
       gsap.utils.toArray(".reveal-section").forEach((section: any) => {
         gsap.fromTo(
           section,
@@ -218,27 +217,6 @@ export default function PersonalProfile() {
         )
       })
 
-      // Text reveal animation
-      gsap.utils.toArray(".text-reveal").forEach((text: any) => {
-        gsap.fromTo(
-          text,
-          { y: 50, opacity: 0, clipPath: "inset(100% 0 0 0)" },
-          {
-            y: 0,
-            opacity: 1,
-            clipPath: "inset(0% 0 0 0)",
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: text,
-              start: "top 85%",
-              end: "bottom 15%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        )
-      })
-
       // Progress bar animations
       gsap.utils.toArray(".progress-bar").forEach((bar: any) => {
         const width = bar.getAttribute("data-width")
@@ -257,33 +235,6 @@ export default function PersonalProfile() {
             },
           },
         )
-      })
-
-      // Parallax effects
-      gsap.utils.toArray(".parallax-slow").forEach((element: any) => {
-        gsap.to(element, {
-          yPercent: -30,
-          ease: "none",
-          scrollTrigger: {
-            trigger: element,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          },
-        })
-      })
-
-      gsap.utils.toArray(".parallax-fast").forEach((element: any) => {
-        gsap.to(element, {
-          yPercent: -60,
-          ease: "none",
-          scrollTrigger: {
-            trigger: element,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          },
-        })
       })
 
       // Magnetic effect for buttons
@@ -321,19 +272,19 @@ export default function PersonalProfile() {
   }, [])
 
   const skills = [
-    { name: "Java", level: 90, icon: Code, category: "Programming", color: "from-orange-500 to-red-500" },
-    { name: "React", level: 85, icon: Code, category: "Frontend", color: "from-blue-500 to-cyan-500" },
-    { name: "Spring Boot", level: 80, icon: Globe, category: "Backend", color: "from-green-500 to-emerald-500" },
-    { name: "MySQL", level: 85, icon: Database, category: "Database", color: "from-blue-600 to-indigo-600" },
-    { name: "MongoDB", level: 75, icon: Database, category: "Database", color: "from-green-600 to-teal-600" },
-    { name: "Tailwind CSS", level: 90, icon: Code, category: "Frontend", color: "from-cyan-500 to-blue-500" },
-    { name: "C++", level: 75, icon: Code, category: "Programming", color: "from-purple-500 to-pink-500" },
+    { name: "Java", level: 90, icon: Code, category: "Programming", color: "from-yellow-400 to-orange-500" },
+    { name: "React", level: 85, icon: Code, category: "Frontend", color: "from-blue-400 to-cyan-400" },
+    { name: "Spring Boot", level: 80, icon: Globe, category: "Backend", color: "from-purple-400 to-pink-400" },
+    { name: "MySQL", level: 85, icon: Database, category: "Database", color: "from-blue-500 to-indigo-500" },
+    { name: "MongoDB", level: 75, icon: Database, category: "Database", color: "from-yellow-500 to-amber-500" },
+    { name: "Tailwind CSS", level: 90, icon: Code, category: "Frontend", color: "from-cyan-400 to-blue-400" },
+    { name: "C++", level: 75, icon: Code, category: "Programming", color: "from-purple-500 to-violet-500" },
     {
       name: "Android (Kotlin)",
       level: 70,
       icon: Smartphone,
       category: "Mobile",
-      color: "from-indigo-500 to-purple-500",
+      color: "from-yellow-400 to-yellow-600",
     },
   ]
 
@@ -403,7 +354,7 @@ export default function PersonalProfile() {
       title: "Giải ba cuộc thi thiết kế website đẹp nhất 2024 tại VKU",
       description: "Thiết kế website sáng tạo và chuyên nghiệp",
       icon: Award,
-      color: "from-green-400 to-emerald-500",
+      color: "from-yellow-500 to-amber-500",
     },
   ]
 
@@ -422,19 +373,18 @@ export default function PersonalProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 overflow-x-hidden transition-colors duration-500">
+    <div className="min-h-screen bg-gradient-dark overflow-x-hidden">
       {isLoading && <LoadingScreen />}
       <ParticleSystem />
       <CursorFollower />
       <ScrollProgress />
-      <DarkModeToggle />
       <FloatingActionButton />
       <SoundEffects />
 
       {/* Custom Cursor */}
       <div
         ref={cursorRef}
-        className="fixed w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full pointer-events-none z-50 mix-blend-difference transition-transform duration-150 ease-out"
+        className="fixed w-6 h-6 bg-gradient-to-r from-yellow-400 to-purple-500 rounded-full pointer-events-none z-50 mix-blend-difference transition-transform duration-150 ease-out"
         style={{
           left: mousePosition.x - 12,
           top: mousePosition.y - 12,
@@ -443,19 +393,17 @@ export default function PersonalProfile() {
       />
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-40 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg">
+      <nav className="fixed top-0 w-full z-40 nav-bg border-b border-white/10 shadow-lg">
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
-              NVTank.ID
-            </div>
+            <div className="text-2xl font-bold gradient-text-main">NVTank.ID</div>
             <div className="hidden md:flex space-x-8">
               {["home", "about", "skills", "projects", "contact"].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
                   className={`relative capitalize transition-all duration-300 font-medium group ${
-                    activeSection === section ? "text-blue-600" : "text-gray-700 hover:text-blue-600"
+                    activeSection === section ? "text-yellow" : "text-secondary hover:text-yellow"
                   }`}
                 >
                   {section === "home"
@@ -468,7 +416,7 @@ export default function PersonalProfile() {
                           ? "Dự án"
                           : "Liên hệ"}
                   <span
-                    className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 ${
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-yellow to-purple transition-all duration-300 ${
                       activeSection === section ? "w-full" : "w-0 group-hover:w-full"
                     }`}
                   />
@@ -481,9 +429,9 @@ export default function PersonalProfile() {
 
       {/* Floating Background Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="floating-1 absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-xl" />
-        <div className="floating-2 absolute top-1/3 right-20 w-48 h-48 bg-gradient-to-r from-indigo-400/20 to-pink-400/20 rounded-full blur-xl" />
-        <div className="floating-3 absolute bottom-1/4 left-1/4 w-40 h-40 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full blur-xl" />
+        <div className="floating-1 absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-yellow-400/20 to-purple-400/20 rounded-full blur-xl" />
+        <div className="floating-2 absolute top-1/3 right-20 w-48 h-48 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-xl" />
+        <div className="floating-3 absolute bottom-1/4 left-1/4 w-40 h-40 bg-gradient-to-r from-yellow-400/20 to-blue-400/20 rounded-full blur-xl" />
       </div>
 
       {/* Hero Section */}
@@ -494,39 +442,39 @@ export default function PersonalProfile() {
       >
         <div className="container mx-auto px-6 text-center relative z-10">
           <div className="hero-avatar mb-8 relative">
-            <div className="w-40 h-40 mx-auto rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 p-1 shadow-2xl">
-              <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-7xl shadow-inner">
+            <div className="w-40 h-40 mx-auto rounded-full bg-gradient-to-r from-yellow via-purple to-blue p-1 shadow-2xl pulse-glow">
+              <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center text-7xl shadow-inner">
                 👨‍💻
               </div>
             </div>
-            <div className="absolute -top-2 -right-2 w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full border-4 border-white animate-pulse shadow-lg flex items-center justify-center">
-              <div className="w-3 h-3 bg-white rounded-full" />
+            <div className="absolute -top-2 -right-2 w-10 h-10 bg-gradient-to-r from-yellow to-amber-400 rounded-full border-4 border-gray-900 animate-pulse shadow-lg flex items-center justify-center">
+              <div className="w-3 h-3 bg-gray-900 rounded-full" />
             </div>
           </div>
 
-          <h1 className="hero-title text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
+          <h1 className="hero-title text-6xl md:text-8xl font-black mb-6 gradient-text-main leading-tight">
             Nguyễn Văn
             <br />
             <span className="text-5xl md:text-7xl">Tuấn Anh</span>
           </h1>
 
           <div className="hero-subtitle mb-8">
-            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full border border-blue-200/50 shadow-lg">
-              <Zap className="w-5 h-5 text-blue-600 mr-2" />
-              <span className="text-xl font-semibold text-blue-700">Full Stack Developer & IT Student</span>
+            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow/20 to-purple/20 rounded-full border border-yellow/30 shadow-lg glass">
+              <Zap className="w-5 h-5 text-yellow mr-2" />
+              <span className="text-xl font-semibold text-white">Full Stack Developer & IT Student</span>
             </div>
           </div>
 
-          <p className="hero-description text-lg text-gray-700 mb-12 max-w-4xl mx-auto leading-relaxed">
+          <p className="hero-description text-lg text-secondary mb-12 max-w-4xl mx-auto leading-relaxed">
             Sinh viên IT năm 2 tại VKU với kinh nghiệm làm việc với{" "}
-            <span className="font-semibold text-blue-600">Java, React</span> và các framework. Có khả năng thích ứng
-            nhanh với môi trường mới và luôn nghiên cứu, cập nhật công nghệ mới mỗi ngày.
+            <span className="font-semibold text-yellow">Java, React</span> và các framework. Có khả năng thích ứng nhanh
+            với môi trường mới và luôn nghiên cứu, cập nhật công nghệ mới mỗi ngày.
           </p>
 
           <div className="hero-buttons flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
             <Button
               size="lg"
-              className="magnetic bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-4 rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl group"
+              className="magnetic bg-gradient-to-r from-yellow to-purple hover:from-yellow-light hover:to-purple-light text-gray-900 px-10 py-4 rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl group font-bold"
               onClick={() => scrollToSection("projects")}
             >
               <span className="mr-3">Khám phá dự án</span>
@@ -535,7 +483,7 @@ export default function PersonalProfile() {
             <Button
               variant="outline"
               size="lg"
-              className="magnetic border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-10 py-4 rounded-full transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl group"
+              className="magnetic border-2 border-yellow text-yellow hover:bg-yellow hover:text-gray-900 px-10 py-4 rounded-full transition-all duration-300 glass shadow-lg hover:shadow-xl group"
             >
               <Download className="w-5 h-5 mr-3 group-hover:animate-bounce" />
               <span>Tải CV</span>
@@ -544,19 +492,19 @@ export default function PersonalProfile() {
 
           <div className="hero-social flex justify-center space-x-6">
             {[
-              { icon: Github, href: "https://github.com/tuananh2005889", label: "GitHub", color: "hover:bg-gray-800" },
+              { icon: Github, href: "https://github.com/tuananh2005889", label: "GitHub", color: "hover:bg-purple" },
               {
                 icon: Linkedin,
                 href: "https://linkedin.com/in/your-profile",
                 label: "LinkedIn",
-                color: "hover:bg-blue-600",
+                color: "hover:bg-blue",
               },
-              { icon: Mail, href: "mailto:nvtankwork@gmail.com", label: "Email", color: "hover:bg-red-500" },
+              { icon: Mail, href: "mailto:nvtankwork@gmail.com", label: "Email", color: "hover:bg-yellow" },
             ].map(({ icon: Icon, href, label, color }) => (
               <a
                 key={label}
                 href={href}
-                className={`magnetic w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-gray-700 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110 ${color}`}
+                className={`magnetic w-14 h-14 rounded-full glass flex items-center justify-center text-white hover:text-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110 ${color}`}
                 aria-label={label}
               >
                 <Icon className="h-6 w-6" />
@@ -566,14 +514,14 @@ export default function PersonalProfile() {
         </div>
 
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-8 h-12 border-2 border-blue-600 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-blue-600 rounded-full mt-2 animate-pulse" />
+          <div className="w-8 h-12 border-2 border-yellow rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-yellow rounded-full mt-2 animate-pulse" />
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-white/50 backdrop-blur-sm">
+      <section className="py-20 bg-gradient-section">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => {
@@ -581,13 +529,13 @@ export default function PersonalProfile() {
               return (
                 <div
                   key={index}
-                  className="stagger-card text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 hover:shadow-xl transition-all duration-300"
+                  className="stagger-card text-center p-6 card-bg rounded-2xl shadow-lg border border-white/10 hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                    <Icon className="w-8 h-8 text-white" />
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-yellow to-purple rounded-full flex items-center justify-center">
+                    <Icon className="w-8 h-8 text-gray-900" />
                   </div>
-                  <div className="text-3xl font-bold text-blue-700 mb-2">{stat.number}</div>
-                  <div className="text-gray-600 font-medium">{stat.label}</div>
+                  <div className="text-3xl font-bold text-yellow mb-2">{stat.number}</div>
+                  <div className="text-muted font-medium">{stat.label}</div>
                 </div>
               )
             })}
@@ -596,32 +544,29 @@ export default function PersonalProfile() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-32 bg-gradient-to-br from-blue-50 to-indigo-50 relative">
-        <div className="parallax-slow absolute inset-0 bg-gradient-to-r from-blue-100/50 to-purple-100/50" />
+      <section id="about" className="py-32 bg-gradient-dark relative">
         <div className="container mx-auto px-6 relative z-10">
           <div className="reveal-section text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Về tôi
-            </h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
+            <h2 className="text-5xl md:text-6xl font-black mb-6 gradient-text-main">Về tôi</h2>
+            <div className="w-32 h-1 bg-gradient-to-r from-yellow to-purple mx-auto rounded-full" />
           </div>
 
           <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
             <div className="space-y-8">
-              <div className="stagger-card bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/50 hover:shadow-2xl transition-all duration-500">
+              <div className="stagger-card card-bg rounded-3xl p-8 shadow-xl border border-white/10 hover:shadow-2xl transition-all duration-500">
                 <div className="flex items-center mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mr-4">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue to-purple rounded-2xl flex items-center justify-center mr-4">
                     <GraduationCap className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-blue-700">Học vấn</h3>
+                  <h3 className="text-2xl font-bold text-yellow">Học vấn</h3>
                 </div>
                 <div className="text-reveal">
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    <span className="font-bold text-blue-600">
+                  <p className="text-secondary leading-relaxed mb-4">
+                    <span className="font-bold text-white">
                       Trường Đại học Công nghệ Thông tin và Truyền thông Việt - Hàn (VKU)
                     </span>
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-muted">
                     Cử nhân Công nghệ Thông tin - Hợp tác Kinh doanh
                     <br />
                     Sinh viên năm 2, chuyên ngành Công nghệ Phần mềm
@@ -629,26 +574,26 @@ export default function PersonalProfile() {
                 </div>
               </div>
 
-              <div className="stagger-card bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/50 hover:shadow-2xl transition-all duration-500">
+              <div className="stagger-card card-bg rounded-3xl p-8 shadow-xl border border-white/10 hover:shadow-2xl transition-all duration-500">
                 <div className="flex items-center mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mr-4">
-                    <Target className="w-8 h-8 text-white" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-purple to-yellow rounded-2xl flex items-center justify-center mr-4">
+                    <Target className="w-8 h-8 text-gray-900" />
                   </div>
-                  <h3 className="text-2xl font-bold text-purple-700">Mục tiêu</h3>
+                  <h3 className="text-2xl font-bold text-purple">Mục tiêu</h3>
                 </div>
                 <div className="text-reveal">
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-secondary leading-relaxed">
                     Là sinh viên Công nghệ Thông tin hướng đến phát triển trong lĩnh vực{" "}
-                    <span className="font-semibold text-purple-600">lập trình web và kỹ thuật phần mềm</span>, mong muốn
-                    làm việc trong môi trường năng động để có thể áp dụng các kỹ năng kỹ thuật và tiếp tục học hỏi để
-                    trở thành một lập trình viên chuyên nghiệp.
+                    <span className="font-semibold text-purple">lập trình web và kỹ thuật phần mềm</span>, mong muốn làm
+                    việc trong môi trường năng động để có thể áp dụng các kỹ năng kỹ thuật và tiếp tục học hỏi để trở
+                    thành một lập trình viên chuyên nghiệp.
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="stagger-card relative">
-              <div className="parallax-fast w-full h-[500px] rounded-3xl bg-gradient-to-br from-blue-100 via-purple-100 to-indigo-100 overflow-hidden shadow-2xl border border-white/50">
+              <div className="w-full h-[500px] rounded-3xl bg-gradient-to-br from-yellow/20 via-purple/20 to-blue/20 overflow-hidden shadow-2xl border border-white/10">
                 <Image
                   src="/placeholder.svg?height=500&width=500"
                   alt="Profile"
@@ -656,10 +601,10 @@ export default function PersonalProfile() {
                   height={500}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-purple-900/20" />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-purple-900/20" />
                 <div className="absolute bottom-6 left-6 right-6">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4">
-                    <p className="text-blue-700 font-semibold">💡 "Code is poetry written in logic"</p>
+                  <div className="glass rounded-2xl p-4">
+                    <p className="text-yellow font-semibold">💡 "Code is poetry written in logic"</p>
                   </div>
                 </div>
               </div>
@@ -668,26 +613,26 @@ export default function PersonalProfile() {
 
           {/* Achievements Grid */}
           <div className="reveal-section">
-            <h3 className="text-3xl font-bold text-center mb-12 text-blue-700">Thành tích & Hoạt động</h3>
+            <h3 className="text-3xl font-bold text-center mb-12 text-yellow">Thành tích & Hoạt động</h3>
             <div className="grid md:grid-cols-2 gap-8">
               {achievements.map((achievement, index) => {
                 const Icon = achievement.icon
                 return (
                   <div
                     key={index}
-                    className="stagger-card bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50 hover:shadow-xl transition-all duration-300 group"
+                    className="stagger-card card-bg rounded-2xl p-6 shadow-lg border border-white/10 hover:shadow-xl transition-all duration-300 group"
                   >
                     <div className="flex items-start space-x-4">
                       <div
                         className={`w-14 h-14 rounded-xl bg-gradient-to-r ${achievement.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}
                       >
-                        <Icon className="h-7 w-7 text-white" />
+                        <Icon className="h-7 w-7 text-gray-900" />
                       </div>
                       <div>
-                        <h4 className="text-lg font-bold text-blue-700 mb-2 group-hover:text-purple-600 transition-colors duration-300">
+                        <h4 className="text-lg font-bold text-yellow mb-2 group-hover:text-purple transition-colors duration-300">
                           {achievement.title}
                         </h4>
-                        <p className="text-gray-600 text-sm leading-relaxed">{achievement.description}</p>
+                        <p className="text-muted text-sm leading-relaxed">{achievement.description}</p>
                       </div>
                     </div>
                   </div>
@@ -699,15 +644,12 @@ export default function PersonalProfile() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-32 bg-white/50 relative overflow-hidden">
-        <div className="parallax-slow absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-purple-50/50" />
+      <section id="skills" className="py-32 bg-gradient-section relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
           <div className="reveal-section text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Kỹ năng
-            </h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-indigo-600 to-purple-600 mx-auto rounded-full" />
-            <p className="text-xl text-gray-600 mt-8 max-w-2xl mx-auto">
+            <h2 className="text-5xl md:text-6xl font-black mb-6 gradient-text-main">Kỹ năng</h2>
+            <div className="w-32 h-1 bg-gradient-to-r from-yellow to-purple mx-auto rounded-full" />
+            <p className="text-xl text-secondary mt-8 max-w-2xl mx-auto">
               Những công nghệ và ngôn ngữ lập trình tôi đã làm việc và thành thạo
             </p>
           </div>
@@ -718,7 +660,7 @@ export default function PersonalProfile() {
               return (
                 <Card
                   key={skill.name}
-                  className="stagger-card bg-white/80 backdrop-blur-sm border-white/50 hover:shadow-2xl transition-all duration-500 group overflow-hidden"
+                  className="stagger-card card-bg border-white/10 hover:shadow-2xl transition-all duration-500 group overflow-hidden"
                 >
                   <CardContent className="p-8">
                     <div className="flex items-center mb-6">
@@ -728,12 +670,12 @@ export default function PersonalProfile() {
                         <Icon className="h-7 w-7 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-800">{skill.name}</h3>
-                        <p className="text-gray-500 text-sm">{skill.category}</p>
+                        <h3 className="text-lg font-bold text-white">{skill.name}</h3>
+                        <p className="text-muted text-sm">{skill.category}</p>
                       </div>
                     </div>
                     <div className="relative">
-                      <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                         <div
                           className={`progress-bar h-3 rounded-full bg-gradient-to-r ${skill.color} transition-all duration-1000 ease-out`}
                           data-width={skill.level}
@@ -741,8 +683,8 @@ export default function PersonalProfile() {
                         />
                       </div>
                       <div className="flex justify-between items-center mt-3">
-                        <span className="text-sm text-gray-600">Proficiency</span>
-                        <span className="text-sm font-bold text-gray-800">{skill.level}%</span>
+                        <span className="text-sm text-muted">Proficiency</span>
+                        <span className="text-sm font-bold text-white">{skill.level}%</span>
                       </div>
                     </div>
                   </CardContent>
@@ -754,15 +696,12 @@ export default function PersonalProfile() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-32 bg-gradient-to-br from-slate-50 to-blue-50 relative">
-        <div className="parallax-fast absolute inset-0 bg-gradient-to-r from-blue-100/30 to-indigo-100/30" />
+      <section id="projects" className="py-32 bg-gradient-dark relative">
         <div className="container mx-auto px-6 relative z-10">
           <div className="reveal-section text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              Dự án nổi bật
-            </h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full" />
-            <p className="text-xl text-gray-600 mt-8 max-w-3xl mx-auto">
+            <h2 className="text-5xl md:text-6xl font-black mb-6 gradient-text-main">Dự án nổi bật</h2>
+            <div className="w-32 h-1 bg-gradient-to-r from-yellow to-purple mx-auto rounded-full" />
+            <p className="text-xl text-secondary mt-8 max-w-3xl mx-auto">
               Những dự án tôi đã thực hiện, từ web applications đến mobile apps với các công nghệ hiện đại
             </p>
           </div>
@@ -777,8 +716,8 @@ export default function PersonalProfile() {
               >
                 <div className={`${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
                   <div className="relative group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-                    <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl border border-white/50 group-hover:shadow-2xl transition-all duration-500">
+                    <div className="absolute inset-0 bg-gradient-to-r from-yellow/20 to-purple/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
+                    <div className="relative card-bg rounded-3xl overflow-hidden shadow-xl border border-white/10 group-hover:shadow-2xl transition-all duration-500">
                       <div className="relative overflow-hidden">
                         <Image
                           src={project.image || "/placeholder.svg"}
@@ -787,22 +726,14 @@ export default function PersonalProfile() {
                           height={300}
                           className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex space-x-3">
-                          <Button
-                            size="sm"
-                            className="magnetic bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30"
-                            asChild
-                          >
+                          <Button size="sm" className="magnetic glass hover:bg-white/30 border border-white/30" asChild>
                             <a href={project.github} target="_blank" rel="noopener noreferrer">
                               <Github className="h-4 w-4" />
                             </a>
                           </Button>
-                          <Button
-                            size="sm"
-                            className="magnetic bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30"
-                            asChild
-                          >
+                          <Button size="sm" className="magnetic glass hover:bg-white/30 border border-white/30" asChild>
                             <a href={project.demo} target="_blank" rel="noopener noreferrer">
                               <ExternalLink className="h-4 w-4" />
                             </a>
@@ -810,7 +741,7 @@ export default function PersonalProfile() {
                         </div>
                         {project.featured && (
                           <div className="absolute top-4 left-4">
-                            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center">
+                            <div className="bg-gradient-to-r from-yellow to-orange-500 text-gray-900 px-3 py-1 rounded-full text-xs font-bold flex items-center">
                               <Star className="w-3 h-3 mr-1" />
                               Featured
                             </div>
@@ -824,11 +755,11 @@ export default function PersonalProfile() {
                 <div className={`${index % 2 === 1 ? "lg:col-start-1 lg:row-start-1" : ""}`}>
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-3xl font-bold text-blue-700 mb-4 group-hover:text-purple-600 transition-colors duration-300">
+                      <h3 className="text-3xl font-bold text-yellow mb-4 group-hover:text-purple transition-colors duration-300">
                         {project.title}
                       </h3>
                       <div className="text-reveal">
-                        <p className="text-gray-700 leading-relaxed text-lg">{project.description}</p>
+                        <p className="text-secondary leading-relaxed text-lg">{project.description}</p>
                       </div>
                     </div>
 
@@ -836,7 +767,7 @@ export default function PersonalProfile() {
                       {project.tags.map((tag) => (
                         <Badge
                           key={tag}
-                          className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 hover:from-blue-200 hover:to-indigo-200 transition-all duration-300 px-4 py-2 text-sm font-medium border border-blue-200/50"
+                          className="bg-gradient-to-r from-yellow/20 to-purple/20 text-yellow hover:from-yellow/30 hover:to-purple/30 transition-all duration-300 px-4 py-2 text-sm font-medium border border-yellow/30"
                         >
                           {tag}
                         </Badge>
@@ -845,7 +776,7 @@ export default function PersonalProfile() {
 
                     <div className="flex space-x-4 pt-4">
                       <Button
-                        className="magnetic bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group"
+                        className="magnetic bg-gradient-to-r from-yellow to-purple hover:from-yellow-light hover:to-purple-light text-gray-900 px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group font-bold"
                         asChild
                       >
                         <a href={project.github} target="_blank" rel="noopener noreferrer">
@@ -856,7 +787,7 @@ export default function PersonalProfile() {
                       </Button>
                       <Button
                         variant="outline"
-                        className="magnetic border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-full transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                        className="magnetic border-2 border-yellow text-yellow hover:bg-yellow hover:text-gray-900 px-6 py-3 rounded-full transition-all duration-300 glass"
                         asChild
                       >
                         <a href={project.demo} target="_blank" rel="noopener noreferrer">
@@ -874,15 +805,12 @@ export default function PersonalProfile() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-32 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative">
-        <div className="parallax-slow absolute inset-0 bg-gradient-to-r from-blue-100/50 to-purple-100/50" />
+      <section id="contact" className="py-32 bg-gradient-section relative">
         <div className="container mx-auto px-6 relative z-10">
           <div className="reveal-section text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Liên hệ
-            </h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
-            <p className="text-xl text-gray-600 mt-8 max-w-2xl mx-auto">
+            <h2 className="text-5xl md:text-6xl font-black mb-6 gradient-text-main">Liên hệ</h2>
+            <div className="w-32 h-1 bg-gradient-to-r from-yellow to-purple mx-auto rounded-full" />
+            <p className="text-xl text-secondary mt-8 max-w-2xl mx-auto">
               Hãy kết nối với tôi để thảo luận về các cơ hội hợp tác hoặc dự án thú vị
             </p>
           </div>
@@ -891,12 +819,12 @@ export default function PersonalProfile() {
             <div className="grid lg:grid-cols-2 gap-16">
               <div className="space-y-8">
                 <div className="stagger-card">
-                  <h3 className="text-3xl font-bold text-blue-700 mb-8 flex items-center">
+                  <h3 className="text-3xl font-bold text-yellow mb-8 flex items-center">
                     <Users className="w-8 h-8 mr-3" />
                     Hãy kết nối với tôi
                   </h3>
                   <div className="text-reveal">
-                    <p className="text-gray-700 text-lg leading-relaxed mb-8">
+                    <p className="text-secondary text-lg leading-relaxed mb-8">
                       Tôi luôn sẵn sàng thảo luận về các dự án mới, cơ hội thực tập, hoặc đơn giản chỉ là trò chuyện về
                       công nghệ và lập trình. Đừng ngần ngại liên hệ!
                     </p>
@@ -909,28 +837,28 @@ export default function PersonalProfile() {
                       icon: Mail,
                       label: "Email",
                       value: "nvtankwork@gmail.com",
-                      color: "from-red-500 to-pink-500",
+                      color: "from-yellow to-orange-500",
                       href: "mailto:nvtankwork@gmail.com",
                     },
                     {
                       icon: Phone,
                       label: "Điện thoại",
                       value: "0374123205",
-                      color: "from-green-500 to-emerald-500",
+                      color: "from-blue to-cyan-500",
                       href: "tel:0374123205",
                     },
                     {
                       icon: MapPin,
                       label: "Địa chỉ",
                       value: "Hòa Quý, Ngũ Hành Sơn, Đà Nẵng",
-                      color: "from-blue-500 to-indigo-500",
+                      color: "from-purple to-pink-500",
                       href: "#",
                     },
                   ].map(({ icon: Icon, label, value, color, href }) => (
                     <a
                       key={label}
                       href={href}
-                      className="stagger-card flex items-center space-x-6 p-6 rounded-2xl bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-500 group border border-white/50 hover:scale-105"
+                      className="stagger-card flex items-center space-x-6 p-6 rounded-2xl card-bg hover:shadow-xl transition-all duration-500 group border border-white/10 hover:scale-105"
                     >
                       <div
                         className={`w-16 h-16 rounded-xl bg-gradient-to-r ${color} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
@@ -938,51 +866,51 @@ export default function PersonalProfile() {
                         <Icon className="h-8 w-8 text-white" />
                       </div>
                       <div>
-                        <p className="text-gray-600 text-sm font-medium">{label}</p>
-                        <p className="text-blue-700 font-bold text-lg group-hover:text-purple-600 transition-colors duration-300">
+                        <p className="text-muted text-sm font-medium">{label}</p>
+                        <p className="text-yellow font-bold text-lg group-hover:text-purple transition-colors duration-300">
                           {value}
                         </p>
                       </div>
-                      <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 ml-auto" />
+                      <ArrowUpRight className="w-5 h-5 text-muted group-hover:text-yellow group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 ml-auto" />
                     </a>
                   ))}
                 </div>
               </div>
 
-              <Card className="stagger-card bg-white/80 backdrop-blur-sm border-white/50 shadow-2xl">
+              <Card className="stagger-card card-bg border-white/10 shadow-2xl">
                 <CardContent className="p-10">
                   <div className="flex items-center mb-8">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mr-4">
-                      <Lightbulb className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 bg-gradient-to-r from-yellow to-purple rounded-xl flex items-center justify-center mr-4">
+                      <Lightbulb className="w-6 h-6 text-gray-900" />
                     </div>
-                    <h3 className="text-2xl font-bold text-blue-700">Gửi tin nhắn</h3>
+                    <h3 className="text-2xl font-bold text-yellow">Gửi tin nhắn</h3>
                   </div>
                   <form className="space-y-6">
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-3">Tên của bạn</label>
+                      <label className="block text-white font-semibold mb-3">Tên của bạn</label>
                       <input
                         type="text"
-                        className="w-full px-6 py-4 rounded-xl bg-white/80 border-2 border-blue-200/50 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all duration-300 shadow-sm"
+                        className="w-full px-6 py-4 rounded-xl bg-gray-800/80 border-2 border-yellow/30 text-white placeholder-gray-400 focus:outline-none focus:border-yellow transition-all duration-300 shadow-sm"
                         placeholder="Nhập tên của bạn"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-3">Email</label>
+                      <label className="block text-white font-semibold mb-3">Email</label>
                       <input
                         type="email"
-                        className="w-full px-6 py-4 rounded-xl bg-white/80 border-2 border-blue-200/50 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all duration-300 shadow-sm"
+                        className="w-full px-6 py-4 rounded-xl bg-gray-800/80 border-2 border-yellow/30 text-white placeholder-gray-400 focus:outline-none focus:border-yellow transition-all duration-300 shadow-sm"
                         placeholder="your@email.com"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-3">Tin nhắn</label>
+                      <label className="block text-white font-semibold mb-3">Tin nhắn</label>
                       <textarea
                         rows={5}
-                        className="w-full px-6 py-4 rounded-xl bg-white/80 border-2 border-blue-200/50 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all duration-300 resize-none shadow-sm"
+                        className="w-full px-6 py-4 rounded-xl bg-gray-800/80 border-2 border-yellow/30 text-white placeholder-gray-400 focus:outline-none focus:border-yellow transition-all duration-300 resize-none shadow-sm"
                         placeholder="Nội dung tin nhắn..."
                       ></textarea>
                     </div>
-                    <Button className="magnetic w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-lg font-semibold">
+                    <Button className="magnetic w-full bg-gradient-to-r from-yellow to-purple hover:from-yellow-light hover:to-purple-light text-gray-900 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-lg font-semibold">
                       <span className="mr-2">Gửi tin nhắn</span>
                       <ArrowUpRight className="w-5 h-5" />
                     </Button>
@@ -995,10 +923,10 @@ export default function PersonalProfile() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-white/80 backdrop-blur-sm border-t border-blue-200/50">
+      <footer className="py-12 glass border-t border-white/10">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-gray-600 mb-4 md:mb-0">
+            <div className="text-muted mb-4 md:mb-0">
               © 2024 Nguyễn Văn Tuấn Anh. Được thiết kế với ❤️ và React | nvtank.id.vn
             </div>
             <div className="flex space-x-6">
@@ -1010,7 +938,7 @@ export default function PersonalProfile() {
                 <a
                   key={label}
                   href={href}
-                  className="magnetic w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg"
+                  className="magnetic w-10 h-10 rounded-full bg-gradient-to-r from-yellow to-purple flex items-center justify-center text-gray-900 hover:scale-110 transition-all duration-300 shadow-lg"
                   aria-label={label}
                 >
                   <Icon className="h-5 w-5" />
