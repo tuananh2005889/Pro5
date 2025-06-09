@@ -48,12 +48,12 @@ export default function PersonalProfile() {
   }, [])
 
   const skills = [
-    { name: "React", level: 90, icon: Code },
-    { name: "TypeScript", level: 85, icon: Code },
-    { name: "Next.js", level: 88, icon: Globe },
-    { name: "UI/UX Design", level: 80, icon: Palette },
-    { name: "Mobile Development", level: 75, icon: Smartphone },
-    { name: "Node.js", level: 82, icon: Code },
+    { name: "React", level: 95, icon: Code },
+    { name: "TypeScript", level: 90, icon: Code },
+    { name: "Next.js", level: 92, icon: Globe },
+    { name: "UI/UX Design", level: 85, icon: Palette },
+    { name: "Mobile Development", level: 80, icon: Smartphone },
+    { name: "Node.js", level: 88, icon: Code },
   ]
 
   const projects = [
@@ -94,7 +94,7 @@ export default function PersonalProfile() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Portfolio
+              NVTank.ID
             </div>
             <div className="hidden md:flex space-x-8">
               {["home", "about", "skills", "projects", "contact"].map((section) => (
@@ -147,7 +147,7 @@ export default function PersonalProfile() {
 
             <p className="text-lg text-white/70 mb-12 max-w-3xl mx-auto leading-relaxed">
               Tôi là một developer đam mê tạo ra những sản phẩm digital đẹp mắt và có ý nghĩa. Với kinh nghiệm trong
-              việc phát triển web và mobile applications.
+              việc phát triển web và mobile applications hiện đại.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
