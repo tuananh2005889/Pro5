@@ -138,7 +138,7 @@ export default function PersonalProfile() {
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
-              Nguyễn Văn A
+              Nguyễn Văn Tuấn Anh
             </h1>
 
             <p className="text-xl md:text-2xl text-purple-200 mb-8 max-w-2xl mx-auto">
@@ -171,9 +171,9 @@ export default function PersonalProfile() {
 
             <div className="flex justify-center space-x-6">
               {[
-                { icon: Github, href: "#", label: "GitHub" },
-                { icon: Linkedin, href: "#", label: "LinkedIn" },
-                { icon: Mail, href: "#", label: "Email" },
+                { icon: Github, href: "https://github.com/tuananh2005889", label: "GitHub" },
+                { icon: Linkedin, href: "https://linkedin.com/in/your-profile", label: "LinkedIn" },
+                { icon: Mail, href: "mailto:contact@nvtank.id.vn", label: "Email" },
               ].map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
@@ -361,7 +361,7 @@ export default function PersonalProfile() {
 
                 <div className="space-y-6">
                   {[
-                    { icon: Mail, label: "Email", value: "contact@example.com" },
+                    { icon: Mail, label: "Email", value: "contact@nvtank.id.vn" },
                     { icon: Phone, label: "Điện thoại", value: "+84 123 456 789" },
                     { icon: MapPin, label: "Địa chỉ", value: "Hà Nội, Việt Nam" },
                   ].map(({ icon: Icon, label, value }) => (
@@ -422,7 +422,7 @@ export default function PersonalProfile() {
       {/* Footer */}
       <footer className="py-8 bg-black/40 border-t border-white/10">
         <div className="container mx-auto px-6 text-center">
-          <p className="text-white/60">© 2024 Nguyễn Văn A. Được thiết kế với ❤️ và React</p>
+          <p className="text-white/60">© 2024 Nguyễn Văn Tuấn Anh. Được thiết kế với ❤️ và React | nvtank.id.vn</p>
         </div>
       </footer>
     </div>
