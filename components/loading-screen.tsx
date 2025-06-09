@@ -41,8 +41,8 @@ export default function LoadingScreen() {
         </div>
 
         {/* Loading Text */}
-        <h1 className="text-4xl font-bold text-white mb-4 animate-pulse">NVTank.ID</h1>
-        <p className="text-yellow mb-8 text-lg">Đang tải trải nghiệm tuyệt vời...</p>
+        <h1 className="text-4xl font-bold text-white mb-4 animate-pulse">Nguyen Van Tuan Anh</h1>
+        <p className="text-white mb-8 text-lg">Loading...</p>
 
         {/* Progress Bar */}
         <div className="w-80 mx-auto">
