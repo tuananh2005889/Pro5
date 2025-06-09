@@ -33,7 +33,6 @@ import LoadingScreen from "@/components/loading-screen"
 import ScrollProgress from "@/components/scroll-progress"
 import FloatingActionButton from "@/components/floating-action-button"
 import CursorFollower from "@/components/cursor-follower"
-import SoundEffects from "@/components/sound-effects"
 import ParticleSystem from "@/components/particle-system"
 
 declare global {
@@ -70,29 +69,29 @@ export default function PersonalProfile() {
 
     window.addEventListener("mousemove", handleMouseMove)
 
-    // Initialize Lenis for ultra-smooth scrolling
-    if (typeof window !== "undefined" && window.Lenis) {
-      const lenis = new window.Lenis({
-        duration: 0.8,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        direction: "vertical",
-        gestureDirection: "vertical",
-        smooth: true,
-        mouseMultiplier: 1.5,
-        smoothTouch: false,
-        touchMultiplier: 2,
-        infinite: false,
-      })
+    // // Initialize Lenis for ultra-smooth scrolling
+    // if (typeof window !== "undefined" && window.Lenis) {
+    //   const lenis = new window.Lenis({
+    //     duration: 0.8,
+    //     easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    //     direction: "vertical",
+    //     gestureDirection: "vertical",
+    //     smooth: true,
+    //     mouseMultiplier: 1.5,
+    //     smoothTouch: false,
+    //     touchMultiplier: 2,
+    //     infinite: false,
+    //   })
 
-      function raf(time: number) {
-        lenis.raf(time)
-        requestAnimationFrame(raf)
-      }
-      requestAnimationFrame(raf)
+    //   function raf(time: number) {
+    //     lenis.raf(time)
+    //     requestAnimationFrame(raf)
+    //   }
+    //   requestAnimationFrame(raf)
 
-      // Connect GSAP ScrollTrigger with Lenis
-      lenis.on("scroll", window.ScrollTrigger?.update)
-    }
+    //   // Connect GSAP ScrollTrigger with Lenis
+    //   lenis.on("scroll", window.ScrollTrigger?.update)
+    // }
 
     // Advanced GSAP Animations
     if (typeof window !== "undefined" && window.gsap && window.ScrollTrigger) {
@@ -272,7 +271,7 @@ export default function PersonalProfile() {
   }, [])
 
   const skills = [
-    { name: "Java", level: 90, icon: Code, category: "Programming", color: "from-yellow-400 to-orange-500" },
+    { name: "Java", level: 90, icon: Code, category: "Programming", color: "from-yellow-400 to-orange" },
     { name: "React", level: 85, icon: Code, category: "Frontend", color: "from-blue-400 to-cyan-400" },
     { name: "Spring Boot", level: 80, icon: Globe, category: "Backend", color: "from-purple-400 to-pink-400" },
     { name: "MySQL", level: 85, icon: Database, category: "Database", color: "from-blue-500 to-indigo-500" },
@@ -295,7 +294,7 @@ export default function PersonalProfile() {
         "Website bán xe được xây dựng với ReactTS, TailwindCSS, NodeJS, MongoDB cùng với AI model để đánh giá sản phẩm phổ biến nhất. Giao diện đẹp mắt với 3D models sử dụng ThreeJS, Framer-motion, AOS, GSAP, Parallax.",
       image: "/placeholder.svg?height=300&width=500",
       tags: ["React", "TypeScript", "NodeJS", "MongoDB", "ThreeJS", "GSAP"],
-      github: "https://github.com/tuananh2005889/auto-showroom",
+      github: "https://github.com/anvnh/auto_showroom",
       demo: "#",
       featured: true,
     },
@@ -305,7 +304,7 @@ export default function PersonalProfile() {
         "Ứng dụng quản lý kho máy tính dựa trên mô hình MVC được xây dựng bằng Java và MySQL. Hệ thống quản lý toàn diện với giao diện thân thiện.",
       image: "/placeholder.svg?height=300&width=500",
       tags: ["Java", "MySQL", "MVC", "Swing"],
-      github: "https://github.com/tuananh2005889/computer-manager",
+      github: "https://github.com/hoangphatdev/computer-management-system",
       demo: "#",
       featured: false,
     },
@@ -315,7 +314,7 @@ export default function PersonalProfile() {
         "Ứng dụng Android với website quản lý sản phẩm được xây dựng bằng Java Spring Boot, Kotlin, Jetpack Compose, ReactJS, TailwindCSS, MySQL. Tích hợp PayOS API để thanh toán thực tế.",
       image: "/placeholder.svg?height=300&width=500",
       tags: ["Spring Boot", "Kotlin", "Jetpack Compose", "ReactJS", "PayOS"],
-      github: "https://github.com/tuananh2005889/auto-part-shop",
+      github: "https://github.com/tuananh2005889/AutoParts_Android",
       demo: "#",
       featured: true,
     },
@@ -325,7 +324,7 @@ export default function PersonalProfile() {
         "Dự án quản lý ký túc xá dựa trên mô hình MVC, được xây dựng bằng Java và MySQL. Hệ thống quản lý sinh viên, phòng ở và các dịch vụ ký túc xá.",
       image: "/placeholder.svg?height=300&width=500",
       tags: ["Java", "MySQL", "MVC", "JavaFX"],
-      github: "https://github.com/tuananh2005889/dormitory-management",
+      github: "https://github.com/tuananh2005889/OOP-KTX-2024-N1",
       demo: "#",
       featured: false,
     },
@@ -333,8 +332,8 @@ export default function PersonalProfile() {
 
   const achievements = [
     {
-      title: "Phó Chủ tịch CLB Kỹ năng tại VKU",
-      description: "Lãnh đạo và tổ chức các hoạt động phát triển kỹ năng cho sinh viên",
+      title: "Phó Chủ nhiệm CLB Kỹ năng tại VKU",
+      description: "Lãnh đạo và tổ chức các hoạt động phát triển kỹ năng cho thành viên CLB",
       icon: Award,
       color: "from-yellow-400 to-orange-500",
     },
@@ -379,7 +378,7 @@ export default function PersonalProfile() {
       <CursorFollower />
       <ScrollProgress />
       <FloatingActionButton />
-      <SoundEffects />
+
 
       {/* Custom Cursor */}
       <div
@@ -396,15 +395,14 @@ export default function PersonalProfile() {
       <nav className="fixed top-0 w-full z-40 nav-bg border-b border-white/10 shadow-lg">
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <div className="text-2xl font-bold gradient-text-main">NVTank.ID</div>
-            <div className="hidden md:flex space-x-8">
+            <div className="text-2xl font-bold gradient-text-main">nvtank</div>
+            <div className="hidden md:flex space-x-8 text-white">
               {["home", "about", "skills", "projects", "contact"].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className={`relative capitalize transition-all duration-300 font-medium group ${
-                    activeSection === section ? "text-yellow" : "text-secondary hover:text-yellow"
-                  }`}
+                  className={`relative capitalize transition-all duration-300 text-gray-100 font-medium group ${activeSection === section} "
+                    }`}
                 >
                   {section === "home"
                     ? "Trang chủ"
@@ -416,9 +414,8 @@ export default function PersonalProfile() {
                           ? "Dự án"
                           : "Liên hệ"}
                   <span
-                    className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-yellow to-purple transition-all duration-300 ${
-                      activeSection === section ? "w-full" : "w-0 group-hover:w-full"
-                    }`}
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-yellow to-purple transition-all duration-300 ${activeSection === section ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
                   />
                 </button>
               ))}
@@ -452,7 +449,7 @@ export default function PersonalProfile() {
             </div>
           </div>
 
-          <h1 className="hero-title text-6xl md:text-8xl font-black mb-6 gradient-text-main leading-tight">
+          <h1 className="hero-title text-6xl md:text-8xl font-black mb-6 mt-10 gradient-text-main leading-tight">
             Nguyễn Văn
             <br />
             <span className="text-5xl md:text-7xl">Tuấn Anh</span>
@@ -460,14 +457,14 @@ export default function PersonalProfile() {
 
           <div className="hero-subtitle mb-8">
             <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow/20 to-purple/20 rounded-full border border-yellow/30 shadow-lg glass">
-              <Zap className="w-5 h-5 text-yellow mr-2" />
-              <span className="text-xl font-semibold text-white">Full Stack Developer & IT Student</span>
+              <Zap className="w-5 h-5 text-white mr-2" />
+              <span className="text-xl font-semibold text-gray-100">Full Stack Developer & IT Student</span>
             </div>
           </div>
 
-          <p className="hero-description text-lg text-secondary mb-12 max-w-4xl mx-auto leading-relaxed">
+          <p className="hero-description text-lg mb-12 text-gray-100 max-w-4xl mx-auto leading-relaxed">
             Sinh viên IT năm 2 tại VKU với kinh nghiệm làm việc với{" "}
-            <span className="font-semibold text-yellow">Java, React</span> và các framework. Có khả năng thích ứng nhanh
+            <span className="font-semibold text-gray-100" >Java, React</span> và các framework. Có khả năng thích ứng nhanh
             với môi trường mới và luôn nghiên cứu, cập nhật công nghệ mới mỗi ngày.
           </p>
 
@@ -483,16 +480,16 @@ export default function PersonalProfile() {
             <Button
               variant="outline"
               size="lg"
-              className="magnetic border-2 border-yellow text-yellow hover:bg-yellow hover:text-gray-900 px-10 py-4 rounded-full transition-all duration-300 glass shadow-lg hover:shadow-xl group"
+              className="magnetic border-2 border-yellow text-white hover:bg-yellow hover:text-gray-900 px-10 py-4 rounded-full transition-all duration-300 glass shadow-lg hover:shadow-xl group"
             >
               <Download className="w-5 h-5 mr-3 group-hover:animate-bounce" />
               <span>Tải CV</span>
             </Button>
           </div>
 
-          <div className="hero-social flex justify-center space-x-6">
+          <div className="hero-social text-gray-100 flex justify-center space-x-6 pb-12">
             {[
-              { icon: Github, href: "https://github.com/tuananh2005889", label: "GitHub", color: "hover:bg-purple" },
+              { icon: Github, href: "https://github.com/tuananh2005889", label: "GitHub", color: "hover:bg-purple text-gray-100" },
               {
                 icon: Linkedin,
                 href: "https://linkedin.com/in/your-profile",
@@ -507,7 +504,7 @@ export default function PersonalProfile() {
                 className={`magnetic w-14 h-14 rounded-full glass flex items-center justify-center text-white hover:text-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110 ${color}`}
                 aria-label={label}
               >
-                <Icon className="h-6 w-6" />
+                <Icon className="h-6 w-6 text-gray-100" />
               </a>
             ))}
           </div>
@@ -529,12 +526,12 @@ export default function PersonalProfile() {
               return (
                 <div
                   key={index}
-                  className="stagger-card text-center p-6 card-bg rounded-2xl shadow-lg border border-white/10 hover:shadow-xl transition-all duration-300"
+                  className="stagger-card text-center p-6 card-bg rounded-2xl shadow-lg border border-white/10 hover:shadow-xl transition-all duration-300 text-gray-100"
                 >
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-yellow to-purple rounded-full flex items-center justify-center">
-                    <Icon className="w-8 h-8 text-gray-900" />
+                  <div className="w-16 h-16 mx-auto mb-4 text-gray-100 rounded-full flex items-center justify-center">
+                    <Icon className="w-8 h-8 text-gray-100" />
                   </div>
-                  <div className="text-3xl font-bold text-yellow mb-2">{stat.number}</div>
+                  <div className="text-3xl font-bold text-gray-100 mb-2">{stat.number}</div>
                   <div className="text-muted font-medium">{stat.label}</div>
                 </div>
               )
@@ -556,17 +553,17 @@ export default function PersonalProfile() {
               <div className="stagger-card card-bg rounded-3xl p-8 shadow-xl border border-white/10 hover:shadow-2xl transition-all duration-500">
                 <div className="flex items-center mb-6">
                   <div className="w-16 h-16 bg-gradient-to-r from-blue to-purple rounded-2xl flex items-center justify-center mr-4">
-                    <GraduationCap className="w-8 h-8 text-white" />
+                    <GraduationCap className="w-8 h-8 text-black" />
                   </div>
-                  <h3 className="text-2xl font-bold text-yellow">Học vấn</h3>
+                  <h3 className="text-2xl font-bold text-gray-100">Học vấn</h3>
                 </div>
                 <div className="text-reveal">
                   <p className="text-secondary leading-relaxed mb-4">
-                    <span className="font-bold text-white">
+                    <span className="font-bold text-gray-100">
                       Trường Đại học Công nghệ Thông tin và Truyền thông Việt - Hàn (VKU)
                     </span>
                   </p>
-                  <p className="text-muted">
+                  <p className="text-gray-100">
                     Cử nhân Công nghệ Thông tin - Hợp tác Kinh doanh
                     <br />
                     Sinh viên năm 2, chuyên ngành Công nghệ Phần mềm
@@ -576,15 +573,15 @@ export default function PersonalProfile() {
 
               <div className="stagger-card card-bg rounded-3xl p-8 shadow-xl border border-white/10 hover:shadow-2xl transition-all duration-500">
                 <div className="flex items-center mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple to-yellow rounded-2xl flex items-center justify-center mr-4">
-                    <Target className="w-8 h-8 text-gray-900" />
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue to-purple  rounded-2xl flex items-center justify-center mr-4">
+                    <Target className="w-8 h-8 text-black" />
                   </div>
                   <h3 className="text-2xl font-bold text-purple">Mục tiêu</h3>
                 </div>
                 <div className="text-reveal">
-                  <p className="text-secondary leading-relaxed">
+                  <p className="text-gray-100 leading-relaxed">
                     Là sinh viên Công nghệ Thông tin hướng đến phát triển trong lĩnh vực{" "}
-                    <span className="font-semibold text-purple">lập trình web và kỹ thuật phần mềm</span>, mong muốn làm
+                    <span className="font-semibold text-gray-100">lập trình web và kỹ thuật phần mềm</span>, mong muốn làm
                     việc trong môi trường năng động để có thể áp dụng các kỹ năng kỹ thuật và tiếp tục học hỏi để trở
                     thành một lập trình viên chuyên nghiệp.
                   </p>
@@ -604,7 +601,7 @@ export default function PersonalProfile() {
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-purple-900/20" />
                 <div className="absolute bottom-6 left-6 right-6">
                   <div className="glass rounded-2xl p-4">
-                    <p className="text-yellow font-semibold">💡 "Code is poetry written in logic"</p>
+                    <p className="text-white font-semibold">💡 "Code is poetry written in logic"</p>
                   </div>
                 </div>
               </div>
@@ -613,7 +610,7 @@ export default function PersonalProfile() {
 
           {/* Achievements Grid */}
           <div className="reveal-section">
-            <h3 className="text-3xl font-bold text-center mb-12 text-yellow">Thành tích & Hoạt động</h3>
+            <h3 className="text-3xl font-bold text-center mb-12 text-gray-100">Thành tích & Hoạt động</h3>
             <div className="grid md:grid-cols-2 gap-8">
               {achievements.map((achievement, index) => {
                 const Icon = achievement.icon
@@ -624,12 +621,12 @@ export default function PersonalProfile() {
                   >
                     <div className="flex items-start space-x-4">
                       <div
-                        className={`w-14 h-14 rounded-xl bg-gradient-to-r ${achievement.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}
+                        className={`w-14 h-14 rounded-xl gray-100 bg-gradient-to-r ${achievement.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}
                       >
-                        <Icon className="h-7 w-7 text-gray-900" />
+                        <Icon className="h-7 w-7 text-gray-100" />
                       </div>
                       <div>
-                        <h4 className="text-lg font-bold text-yellow mb-2 group-hover:text-purple transition-colors duration-300">
+                        <h4 className="text-lg font-bold text-gray-100 mb-2 group-hover:text-purple transition-colors duration-300">
                           {achievement.title}
                         </h4>
                         <p className="text-muted text-sm leading-relaxed">{achievement.description}</p>
@@ -649,7 +646,7 @@ export default function PersonalProfile() {
           <div className="reveal-section text-center mb-20">
             <h2 className="text-5xl md:text-6xl font-black mb-6 gradient-text-main">Kỹ năng</h2>
             <div className="w-32 h-1 bg-gradient-to-r from-yellow to-purple mx-auto rounded-full" />
-            <p className="text-xl text-secondary mt-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-100 mt-8 max-w-2xl mx-auto">
               Những công nghệ và ngôn ngữ lập trình tôi đã làm việc và thành thạo
             </p>
           </div>
@@ -670,8 +667,8 @@ export default function PersonalProfile() {
                         <Icon className="h-7 w-7 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-white">{skill.name}</h3>
-                        <p className="text-muted text-sm">{skill.category}</p>
+                        <h3 className="text-lg font-bold text-gray-100">{skill.name}</h3>
+                        <p className="text-gray-100 text-sm">{skill.category}</p>
                       </div>
                     </div>
                     <div className="relative">
@@ -683,8 +680,8 @@ export default function PersonalProfile() {
                         />
                       </div>
                       <div className="flex justify-between items-center mt-3">
-                        <span className="text-sm text-muted">Proficiency</span>
-                        <span className="text-sm font-bold text-white">{skill.level}%</span>
+                        <span className="text-sm text-gray-100">Proficiency</span>
+                        <span className="text-sm font-bold text-gray-100">{skill.level}%</span>
                       </div>
                     </div>
                   </CardContent>
@@ -701,7 +698,7 @@ export default function PersonalProfile() {
           <div className="reveal-section text-center mb-20">
             <h2 className="text-5xl md:text-6xl font-black mb-6 gradient-text-main">Dự án nổi bật</h2>
             <div className="w-32 h-1 bg-gradient-to-r from-yellow to-purple mx-auto rounded-full" />
-            <p className="text-xl text-secondary mt-8 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-100 mt-8 max-w-3xl mx-auto">
               Những dự án tôi đã thực hiện, từ web applications đến mobile apps với các công nghệ hiện đại
             </p>
           </div>
@@ -710,38 +707,26 @@ export default function PersonalProfile() {
             {projects.map((project, index) => (
               <div
                 key={index}
-                className={`stagger-card grid lg:grid-cols-2 gap-12 items-center ${
-                  index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
-                }`}
+                className={`stagger-card grid lg:grid-cols-2 text-gray-100 gap-12 items-center ${index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
+                  }`}
               >
                 <div className={`${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
                   <div className="relative group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-yellow/20 to-purple/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-                    <div className="relative card-bg rounded-3xl overflow-hidden shadow-xl border border-white/10 group-hover:shadow-2xl transition-all duration-500">
+                    <div className="absolute text-gray-100 inset-0 bg-gradient-to-r from-yellow/20 to-purple/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
+                    <div className="relative card-bg rounded-3xl overflow-hidden shadow-xl border border-white/10 group-hover:shadow-2xl text-gray-100 transition-all duration-500">
                       <div className="relative overflow-hidden">
-                        <Image
-                          src={project.image || "/placeholder.svg"}
-                          alt={project.title}
-                          width={500}
-                          height={300}
-                          className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 gray-100 transition-opacity duration-500" />
                         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex space-x-3">
                           <Button size="sm" className="magnetic glass hover:bg-white/30 border border-white/30" asChild>
                             <a href={project.github} target="_blank" rel="noopener noreferrer">
-                              <Github className="h-4 w-4" />
-                            </a>
-                          </Button>
-                          <Button size="sm" className="magnetic glass hover:bg-white/30 border border-white/30" asChild>
-                            <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                              <ExternalLink className="h-4 w-4" />
+                              <Github className="h-4 w-4 text-gray-100" />
                             </a>
                           </Button>
                         </div>
                         {project.featured && (
                           <div className="absolute top-4 left-4">
-                            <div className="bg-gradient-to-r from-yellow to-orange-500 text-gray-900 px-3 py-1 rounded-full text-xs font-bold flex items-center">
+                            <div className="bg-gradient-to-r from-yellow to-orange-500  px-3 py-1 rounded-full text-xs text-gray-100 font-bold flex items-center">
                               <Star className="w-3 h-3 mr-1" />
                               Featured
                             </div>
@@ -755,11 +740,11 @@ export default function PersonalProfile() {
                 <div className={`${index % 2 === 1 ? "lg:col-start-1 lg:row-start-1" : ""}`}>
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-3xl font-bold text-yellow mb-4 group-hover:text-purple transition-colors duration-300">
+                      <h3 className="text-3xl font-bold  mb-4 group-hover:text-purple transition-colors duration-300 text-gray-100">
                         {project.title}
                       </h3>
                       <div className="text-reveal">
-                        <p className="text-secondary leading-relaxed text-lg">{project.description}</p>
+                        <p className="text-gray-100 leading-relaxed text-lg">{project.description}</p>
                       </div>
                     </div>
 
@@ -767,7 +752,7 @@ export default function PersonalProfile() {
                       {project.tags.map((tag) => (
                         <Badge
                           key={tag}
-                          className="bg-gradient-to-r from-yellow/20 to-purple/20 text-yellow hover:from-yellow/30 hover:to-purple/30 transition-all duration-300 px-4 py-2 text-sm font-medium border border-yellow/30"
+                          className="bg-gradient-to-r from-yellow/20 to-purple/20 text-white hover:from-yellow/30 hover:to-purple/30 transition-all duration-300 px-4 py-2 text-sm font-medium border border-yellow/30 text-gray-100"
                         >
                           {tag}
                         </Badge>
@@ -787,7 +772,7 @@ export default function PersonalProfile() {
                       </Button>
                       <Button
                         variant="outline"
-                        className="magnetic border-2 border-yellow text-yellow hover:bg-yellow hover:text-gray-900 px-6 py-3 rounded-full transition-all duration-300 glass"
+                        className="magnetic border-2 border-yellow text-white hover:bg-yellow hover:text-gray-900 px-6 py-3 rounded-full transition-all duration-300 glass"
                         asChild
                       >
                         <a href={project.demo} target="_blank" rel="noopener noreferrer">
@@ -810,7 +795,7 @@ export default function PersonalProfile() {
           <div className="reveal-section text-center mb-20">
             <h2 className="text-5xl md:text-6xl font-black mb-6 gradient-text-main">Liên hệ</h2>
             <div className="w-32 h-1 bg-gradient-to-r from-yellow to-purple mx-auto rounded-full" />
-            <p className="text-xl text-secondary mt-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-100 mt-8 max-w-2xl mx-auto">
               Hãy kết nối với tôi để thảo luận về các cơ hội hợp tác hoặc dự án thú vị
             </p>
           </div>
@@ -819,12 +804,12 @@ export default function PersonalProfile() {
             <div className="grid lg:grid-cols-2 gap-16">
               <div className="space-y-8">
                 <div className="stagger-card">
-                  <h3 className="text-3xl font-bold text-yellow mb-8 flex items-center">
+                  <h3 className="text-3xl font-bold text-gray-100 mb-8 flex items-center">
                     <Users className="w-8 h-8 mr-3" />
                     Hãy kết nối với tôi
                   </h3>
                   <div className="text-reveal">
-                    <p className="text-secondary text-lg leading-relaxed mb-8">
+                    <p className="text-gray-100 text-lg leading-relaxed mb-8">
                       Tôi luôn sẵn sàng thảo luận về các dự án mới, cơ hội thực tập, hoặc đơn giản chỉ là trò chuyện về
                       công nghệ và lập trình. Đừng ngần ngại liên hệ!
                     </p>
@@ -837,21 +822,21 @@ export default function PersonalProfile() {
                       icon: Mail,
                       label: "Email",
                       value: "nvtankwork@gmail.com",
-                      color: "from-yellow to-orange-500",
+                      color: "text-gray-100",
                       href: "mailto:nvtankwork@gmail.com",
                     },
                     {
                       icon: Phone,
                       label: "Điện thoại",
                       value: "0374123205",
-                      color: "from-blue to-cyan-500",
+                      color: "text-gray-100",
                       href: "tel:0374123205",
                     },
                     {
                       icon: MapPin,
                       label: "Địa chỉ",
                       value: "Hòa Quý, Ngũ Hành Sơn, Đà Nẵng",
-                      color: "from-purple to-pink-500",
+                      color: "text-gray-100",
                       href: "#",
                     },
                   ].map(({ icon: Icon, label, value, color, href }) => (
@@ -861,17 +846,17 @@ export default function PersonalProfile() {
                       className="stagger-card flex items-center space-x-6 p-6 rounded-2xl card-bg hover:shadow-xl transition-all duration-500 group border border-white/10 hover:scale-105"
                     >
                       <div
-                        className={`w-16 h-16 rounded-xl bg-gradient-to-r ${color} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
+                        className={`w-16 h-16 rounded-xl bg-gradient-to-r ${color} flex items-center justify-center group-hover:scale-110 transition-transform duration-300 text-gray-100`}
                       >
-                        <Icon className="h-8 w-8 text-white" />
+                        <Icon className="h-8 w-8 text-gray-100" />
                       </div>
                       <div>
-                        <p className="text-muted text-sm font-medium">{label}</p>
-                        <p className="text-yellow font-bold text-lg group-hover:text-purple transition-colors duration-300">
+                        <p className="text-gray-100 text-sm font-medium">{label}</p>
+                        <p className="text-gray-100 font-bold text-lg group-hover:text-purple transition-colors duration-300">
                           {value}
                         </p>
                       </div>
-                      <ArrowUpRight className="w-5 h-5 text-muted group-hover:text-yellow group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 ml-auto" />
+                      <ArrowUpRight className="w-5 h-5 text-muted group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 ml-auto" />
                     </a>
                   ))}
                 </div>
@@ -883,11 +868,11 @@ export default function PersonalProfile() {
                     <div className="w-12 h-12 bg-gradient-to-r from-yellow to-purple rounded-xl flex items-center justify-center mr-4">
                       <Lightbulb className="w-6 h-6 text-gray-900" />
                     </div>
-                    <h3 className="text-2xl font-bold text-yellow">Gửi tin nhắn</h3>
+                    <h3 className="text-2xl font-bold text-gray-100">Gửi tin nhắn</h3>
                   </div>
                   <form className="space-y-6">
                     <div>
-                      <label className="block text-white font-semibold mb-3">Tên của bạn</label>
+                      <label className="block text-gray-100 font-semibold mb-3">Tên của bạn</label>
                       <input
                         type="text"
                         className="w-full px-6 py-4 rounded-xl bg-gray-800/80 border-2 border-yellow/30 text-white placeholder-gray-400 focus:outline-none focus:border-yellow transition-all duration-300 shadow-sm"
@@ -895,7 +880,7 @@ export default function PersonalProfile() {
                       />
                     </div>
                     <div>
-                      <label className="block text-white font-semibold mb-3">Email</label>
+                      <label className="block text-gray-100 font-semibold mb-3">Email</label>
                       <input
                         type="email"
                         className="w-full px-6 py-4 rounded-xl bg-gray-800/80 border-2 border-yellow/30 text-white placeholder-gray-400 focus:outline-none focus:border-yellow transition-all duration-300 shadow-sm"
@@ -903,10 +888,10 @@ export default function PersonalProfile() {
                       />
                     </div>
                     <div>
-                      <label className="block text-white font-semibold mb-3">Tin nhắn</label>
+                      <label className="block text-gray-100 font-semibold mb-3">Tin nhắn</label>
                       <textarea
                         rows={5}
-                        className="w-full px-6 py-4 rounded-xl bg-gray-800/80 border-2 border-yellow/30 text-white placeholder-gray-400 focus:outline-none focus:border-yellow transition-all duration-300 resize-none shadow-sm"
+                        className="w-full px-6 py-4 rounded-xl bg-gray-800/80 border-2 border-yellow/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:border-yellow transition-all duration-300 resize-none shadow-sm"
                         placeholder="Nội dung tin nhắn..."
                       ></textarea>
                     </div>
@@ -926,8 +911,8 @@ export default function PersonalProfile() {
       <footer className="py-12 glass border-t border-white/10">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-muted mb-4 md:mb-0">
-              © 2024 Nguyễn Văn Tuấn Anh. Được thiết kế với ❤️ và React | nvtank.id.vn
+            <div className="text-gray-100 mb-4 md:mb-0">
+              © 2024 Nguyễn Văn Tuấn Anh. Được thiết kế với và React | nvtank.id.vn
             </div>
             <div className="flex space-x-6">
               {[
