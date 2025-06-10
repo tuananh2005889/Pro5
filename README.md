@@ -19,7 +19,7 @@ https://nvtank.id.vn/
 
 ## 📁 Project Structure
 
-```bash
+\`\`\`bash
 ├── public/             # Static assets (images, favicon, etc.)
 ├── src/                # Main source code (if exported)
 ├── .vercel/            # Vercel deployment config
