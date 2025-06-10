@@ -17,23 +17,6 @@ https://nvtank.id.vn/
 
 ---
 
-## 🛠️ Edit & Continue Building
-
-You can continue editing my project here:
-
-**🧩 [https://v0.dev/chat/projects/H2HiJJV8pQb](https://v0.dev/chat/projects/H2HiJJV8pQb)**
-
----
-
-## ⚙️ How It Works
-
-1. Design your UI on [v0.dev](https://v0.dev)
-2. Deploy directly from the v0 interface
-3. This GitHub repository automatically syncs with your deployed project
-4. [Vercel](https://vercel.com) deploys the latest changes from this repository
-
----
-
 ## 📁 Project Structure
 
 ```bash
